@@ -32,6 +32,9 @@
 
 ## Questions
 
+* How will we manage scores? 
+  * http://trueskill.org/
+
 ## Future
 
 * Verification of versions
