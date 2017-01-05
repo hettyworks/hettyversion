@@ -14,6 +14,7 @@ class base_config(object):
 
 def create_app(config=base_config):
     app = Flask(__name__)
+    app.secret_key = 'some secret key'
     app.config.from_object(config)
     db.init_app(app)
 
