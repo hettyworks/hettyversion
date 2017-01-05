@@ -1,0 +1,5 @@
+flask_sqlalchemy
+typing
+mypy-lang
+flask_script
+flask_migrate
