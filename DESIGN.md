@@ -33,4 +33,6 @@
 
 ## Future
 
-* Verify/moderate versions
+* Verification of versions
+* Verification of new bands
+* Verification of new songs
