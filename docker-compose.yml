@@ -1,0 +1,6 @@
+version: '2'
+services:
+  db:
+    image: mysql:5.7.17
+    environment:
+      MYSQL_ROOT_PASSWORD: root
