@@ -9,18 +9,18 @@
 
 ## Tech Stack
 
-* Python 3
+* Python 3.4
 * Flask
 * Docker
 
 ## Schema Design
 
-* users: ID, username, hashpw, role, registered_timestamp
-* songs: ID, name, desc, bandid
-* versions: ID, title, datestamp_source, timestamp_added, songid, link (optional), added_by
-* bands: ID, name, desc
-* votes: ID, userid, version1id, version2id, winnerid, timestamp
-* comments: ID, userid, content, versionid, timestamp
+- [ ] users: ID, username, hashpw, role, registered_timestamp
+- [x] songs: ID, name, desc, bandid
+- [x] versions: ID, title, datestamp_source, timestamp_added, songid, link (optional), added_by
+- [x] bands: ID, name, desc
+- [x] votes: ID, userid, version1id, version2id, winnerid, timestamp
+- [x] comments: ID, userid, content, versionid, timestamp
 
 ## Pages
 
