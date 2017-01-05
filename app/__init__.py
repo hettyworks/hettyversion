@@ -7,6 +7,7 @@ from app.votes.model import Vote
 from app.comments.model import Comment
 from app.bands.model import Band
 from app.songs.model import Song
+from app.versions.views import version
 
 class base_config(object):
     #SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
@@ -16,6 +17,8 @@ def create_app(config=base_config):
     app = Flask(__name__)
     app.secret_key = 'some secret key'
     app.config.from_object(config)
+    app.register_blueprint(version, url_prefix='/versions')
+
     db.init_app(app)
 
     admin = Admin(app, name='microblog', template_mode='bootstrap3')

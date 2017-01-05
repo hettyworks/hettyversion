@@ -5,3 +5,4 @@ flask_script
 flask_migrate
 mysqlclient
 flask_admin
+flask_wtf
