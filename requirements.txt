@@ -3,3 +3,4 @@ typing
 mypy-lang
 flask_script
 flask_migrate
+mysqlclient
