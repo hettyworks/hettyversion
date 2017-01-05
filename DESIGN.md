@@ -13,8 +13,19 @@
 
 ## Schema Design
 
-> [2:40]  
-> looks like we have Users (with profile fields), Songs (with meta data), Versions (with votes)
+```
+user table is like: ID, username, hashpw, role
+song is: ID, name, desc
+version is: ID, datestamp, songid, link
+band is: ID, name
+head2head: ID, datestamp, versionID1, versionID2, winner, userID
+```
+
+## Pages
+
+login, logout, register, resetpw, home page, single song page w/list of versions, single version page, h2h between versions page, master list of songs (edited)
+add version, edit version, add song, edit song
+add single band page, add band, edit band
 
 ## Questions
 
