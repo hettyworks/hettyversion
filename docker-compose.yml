@@ -4,3 +4,6 @@ services:
     image: mysql:5.7.17
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hettyversion
+    ports:
+      - 3306:3306
