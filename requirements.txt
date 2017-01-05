@@ -4,3 +4,4 @@ mypy-lang
 flask_script
 flask_migrate
 mysqlclient
+flask_admin
