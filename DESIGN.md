@@ -15,11 +15,11 @@
 
 ## Schema Design
 
-users: ID, username, hashpw, role
-songs: ID, name, desc, bandid
-versions: ID, title, datestamp, songid, link (optional)
-bands: ID, name, desc
-headtohead: ID, userid, version1id, version2id, winnerid
+* users: ID, username, hashpw, role
+* songs: ID, name, desc, bandid
+* versions: ID, title, datestamp, songid, link (optional)
+* bands: ID, name, desc
+* headtohead: ID, userid, version1id, version2id, winnerid
 
 ## Pages
 
