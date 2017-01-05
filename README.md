@@ -7,6 +7,7 @@ docker-compose up -d
 pip3.4 install -r requirements.txt
 python3.4 manage.py db migrate
 python3.4 manage.py load_songdata
+python3.4 manage.py runserver
 ```
 
 ## Admin
