@@ -4,35 +4,33 @@
 ## Core Features
 
 * A headyversion.com clone with support for arbitrary song lists and multiple bands
-* A head-to-head song ranking game (e.g. http://www.allourideas.org/)
+* A head-to-head version ranking game (e.g. http://www.allourideas.org/)
+* Generate ELO & ranking of any given version
 
 ## Tech Stack
 
-* Python (what version?)
+* Python 3
 * Flask
+* Docker
 
 ## Schema Design
 
-```
-user table is like: ID, username, hashpw, role
-song is: ID, name, desc
-version is: ID, datestamp_added, datestamp_source, songid, link, added_by
-band is: ID, name
-head2head: ID, datestamp, versionID1, versionID2, winner, userID
-```
+users: ID, username, hashpw, role
+songs: ID, name, desc, bandid
+versions: ID, title, datestamp, songid, link (optional)
+bands: ID, name, desc
+headtohead: ID, userid, version1id, version2id, winnerid
 
 ## Pages
 
-login, logout, register, resetpw, home page, single song page w/list of versions, single version page, h2h between versions page, master list of songs (edited)
-add version, edit version, add song, edit song
-add single band page, add band, edit band
+* login, logout, register, resetpw
+* home page, list of bands, list of all songs, single band page w/list of their songs, single song page w/list of versions, single version page, h2h between versions page
+* add version, edit version, delete version (admin)
+* add song (admin), edit song (admin), delete song (admin)
+* add band (admin), edit band (admin), delete band (admin)
 
 ## Questions
 
-* How do we handle different versions of songs? can people just add new versions at will?
-
 ## Future
 
-* Verification of versions
-* Verification of new bands
-* Verification of new songs
+* Verify/moderate versions
