@@ -22,7 +22,18 @@
 
 ## Python
 
+* Upgrade pip: `pip install --upgrade pip`
 * Install python3-venv: `sudo apt-get install python3-venv`
 * Create a python3-venv: `python3 -m venv venv`
 * Activate the venv: `source venv/bin/activate`
+* Install mysqlclient deps: `sudo apt-get install python-dev python3-dev'
+* `sudo apt-get install libmysqlclient-dev`
+* `pip install pymysql`
 
+## Launch
+
+* `docker-compose up -d`
+* `pip install -r requirements.txt`
+* `python manage.py db upgrade`
+* `python manage.py load_songdata`
+* `python manage.py runserver`
