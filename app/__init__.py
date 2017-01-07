@@ -9,9 +9,12 @@ from app.bands.model import Band
 from app.songs.model import Song
 from app.versions.views import version
 
+import os
+
 class base_config(object):
     #SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
-    SQLALCHEMY_DATABASE_URI = 'mysql://root:root@127.0.0.1/hettyversion'
+    mysql_ip = os.getenv('HETTYVERSION_MYSQL_IP', '192.168.99.100');
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:root@{0}/hettyversion'.format(mysql_ip);
 
 def create_app(config=base_config):
     app = Flask(__name__)
