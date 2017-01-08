@@ -1,7 +1,6 @@
 from enum import Enum
 from hettyversion.database import db
 from hettyversion.models import Version
-import hettyversion.versions.views
 from trueskill import Rating, rate_1vs1
 
 class Winner(Enum):

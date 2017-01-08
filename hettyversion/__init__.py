@@ -8,18 +8,14 @@ from hettyversion.database import db
 import hettyversion.models
 from hettyversion.config import base_config
 
-from hettyversion.versions.views import version_blueprint
-from hettyversion.shutdown import shutdown_blueprint
-from hettyversion.users.views import user_blueprint
+from hettyversion.views import frontend
 
 
 def create_app(config=base_config):
     app = Flask(__name__)
     app.secret_key = 'some secret key'
     app.config.from_object(config)
-    app.register_blueprint(version_blueprint, url_prefix='/versions')
-    app.register_blueprint(shutdown_blueprint)
-    app.register_blueprint(user_blueprint)
+    app.register_blueprint(frontend)
 
     db.init_app(app)
     mail = Mail(app)
