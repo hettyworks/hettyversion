@@ -8,3 +8,5 @@ class Version(db.Model):
     song_id = db.Column(db.Integer)
     url = db.Column(db.String(256))
     created_by = db.Column(db.Integer)
+    mu = db.Column(db.Float)
+    sigma = db.Column(db.Float)
