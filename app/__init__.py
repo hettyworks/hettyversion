@@ -7,9 +7,12 @@ from app.votes.model import Vote
 from app.comments.model import Comment
 from app.bands.model import Band
 from app.songs.model import Song
-from app.versions.views import version
+from app.users.model import User
+from app.versions.views import version_blueprint
+from app.shutdown import shutdown_blueprint
 
 import os
+from flask_user import login_required, UserManager, SQLAlchemyAdapter
 
 class base_config(object):
     #SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
@@ -20,7 +23,8 @@ def create_app(config=base_config):
     app = Flask(__name__)
     app.secret_key = 'some secret key'
     app.config.from_object(config)
-    app.register_blueprint(version, url_prefix='/versions')
+    app.register_blueprint(version_blueprint, url_prefix='/versions')
+    app.register_blueprint(shutdown_blueprint)
 
     db.init_app(app)
 
@@ -30,5 +34,6 @@ def create_app(config=base_config):
     admin.add_view(ModelView(Comment, db.session))
     admin.add_view(ModelView(Band, db.session))
     admin.add_view(ModelView(Song, db.session))
+    admin.add_view(ModelView(User, db.session))
 
     return app
