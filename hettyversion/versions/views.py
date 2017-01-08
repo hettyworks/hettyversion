@@ -1,8 +1,8 @@
 from flask import (
     current_app, request, redirect, url_for, render_template, flash, abort,
 )
-from app.versions.model import Version
-from app.versions.forms import VersionForm
+from hettyversion.models import Version
+from hettyversion.versions.forms import VersionForm
 from flask import Blueprint
 
 version_blueprint = Blueprint('version_blueprint', __name__)

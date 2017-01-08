@@ -1,21 +1,17 @@
+import os
+
 from flask import Flask
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_mail import Mail
-
-from app.database import db
-from app.versions.model import Version
-from app.votes.model import Vote
-from app.comments.model import Comment
-from app.bands.model import Band
-from app.songs.model import Song
-from app.users.model import User
-from app.versions.views import version_blueprint
-from app.shutdown import shutdown_blueprint
-from app.users.views import user_blueprint
-
-import os
 from flask_user import UserManager, SQLAlchemyAdapter
+
+from hettyversion.database import db
+import hettyversion.models
+from hettyversion.versions.views import version_blueprint
+from hettyversion.shutdown import shutdown_blueprint
+from hettyversion.users.views import user_blueprint
+
 
 class base_config(object):
     #SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
@@ -52,14 +48,14 @@ def create_app(config=base_config):
     mail = Mail(app)
 
     admin = Admin(app, name='microblog', template_mode='bootstrap3')
-    admin.add_view(ModelView(Version, db.session))
-    admin.add_view(ModelView(Vote, db.session))
-    admin.add_view(ModelView(Comment, db.session))
-    admin.add_view(ModelView(Band, db.session))
-    admin.add_view(ModelView(Song, db.session))
-    admin.add_view(ModelView(User, db.session))
+    admin.add_view(ModelView(hettyversion.models.Version, db.session))
+    admin.add_view(ModelView(hettyversion.models.Vote, db.session))
+    admin.add_view(ModelView(hettyversion.models.Comment, db.session))
+    admin.add_view(ModelView(hettyversion.models.Band, db.session))
+    admin.add_view(ModelView(hettyversion.models.Song, db.session))
+    admin.add_view(ModelView(hettyversion.models.User, db.session))
 
-    db_adapter = SQLAlchemyAdapter(db, User)
+    db_adapter = SQLAlchemyAdapter(db, hettyversion.models.User)
     user_manager = UserManager(db_adapter, app)
 
     return app
