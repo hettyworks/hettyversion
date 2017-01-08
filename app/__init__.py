@@ -60,6 +60,6 @@ def create_app(config=base_config):
     admin.add_view(ModelView(User, db.session))
 
     db_adapter = SQLAlchemyAdapter(db, User)
-    user_manager = UserManager(db_adapter, app) 
+    user_manager = UserManager(db_adapter, app)
 
     return app
