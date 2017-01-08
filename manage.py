@@ -10,6 +10,7 @@ import app.votes.model
 from app.data.scrape_songs import get_song_names
 
 app = create_app()
+app.app_context().push() # set default context
 migrate = Migrate(app, db)
 
 manager = Manager(app)
