@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %} - My Webpage</title>
+    {% endblock %}
+  </head>
+  <body>
+    <div id="header">
+      {% block header %}
+        <ul class="main-navigation">
+          <li><a href="/">Home</a></li>
+          <li><a href="/members">Members Area</a></li>
+          <li><a href="/versions">Add Version</a></li>
+          <li><a href="/admin">Admin Area</a></li>
+        </ul>
+      {% endblock %}
+    </div>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <div id="content">{% block content %}{% endblock %}</div>
+    <div id="footer">
+      {% block footer %}
+      &copy; Copyright 2017 by <a href="#">you</a>.
+      {% endblock %}
+    </div>
+  </body>
+</html>
