@@ -10,6 +10,10 @@ python3.4 manage.py load_songdata
 python3.4 manage.py runserver
 ```
 
+### Flask-Mail note (required)
+
+You must create an email app password and store that and your gmail address in MAIL_PASSWORD and MAIL_USERNAME, respectively: `https://security.google.com/settings/security/apppasswords`
+
 Flask-Admin is available here
 
 * <http://localhost:5000/admin/>
