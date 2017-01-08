@@ -2,6 +2,8 @@ from enum import Enum
 from hettyversion.database import db
 from hettyversion.models import Version
 from trueskill import Rating, rate_1vs1
+from flask_user import current_user, login_required
+
 
 class Winner(Enum):
     LEFT = 1
@@ -45,3 +47,22 @@ def init_rating(v):
     v.sigma = r.sigma
     db.session.commit()
     return v
+
+def get_candidate(band_id=1):
+    # for current_user.id
+    # lookup songs that have at least 2 versions, choose one
+    # choose a version, iterate through the rest of the versions,
+    # looking for a pair that current_user.id has not already rated
+    # present the first found
+    for song_id in db.session.query(Song.song_id).filter(Song.band_id == band_id):
+        versions = db.session.query(Version.version_id).filter(Version.song_id == song_id)
+        for lhs in versions:
+            for rhs in versions:
+                if lhs != rhs:
+                    if db.session.query(Vote).\
+                       filter(and_(Vote.created_by == current_user.id,
+                                   or_(and_(Vote.lhs == lhs, Vote.rhs == rhs),
+                                       and_(Vote.lhs == rhs, Vote.rhs == lhs)))).count() == 0:
+                        # user hasn't voted
+                        return lhs, rhs
+    raise Exception("Couldn't find a pair for user")
