@@ -1,4 +1,4 @@
-from flask import redirect, Blueprint, render_template, render_template_string
+from flask import redirect, Blueprint, render_template
 from flask_user import login_required
 
 from hettyversion.versions.forms import VersionForm
@@ -16,10 +16,4 @@ def create_version():
 @frontend.route('/members/', methods=['GET'])
 @login_required
 def members_page():
-	return render_template_string("""
-            {% extends "base.html" %}
-            {% block content %}
-                <h2>Members page</h2>
-                <p>This page can only be accessed by authenticated users.</p><br/>
-            {% endblock %}
-            """) 
+	return render_template('members.html')
