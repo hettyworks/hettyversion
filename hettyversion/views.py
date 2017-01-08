@@ -1,7 +1,7 @@
 from flask import redirect, Blueprint, render_template
 from flask_user import login_required
 
-from hettyversion.versions.forms import VersionForm
+from hettyversion.forms import VersionForm
 
 frontend = Blueprint('frontend', __name__)
 
