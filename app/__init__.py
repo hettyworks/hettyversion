@@ -34,6 +34,10 @@ class base_config(object):
 
     USER_APP_NAME        = "HettyVersion"
 
+    USER_ENABLE_EMAIL              = True      # Register with Email
+    USER_ENABLE_CONFIRM_EMAIL      = os.getenv('HV_CONFIRM_EMAIL', 'True') == 'True'      # Force users to confirm their email
+
+
     DEBUG = True
 
 def create_app(config=base_config):
