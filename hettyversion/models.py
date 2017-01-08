@@ -24,17 +24,17 @@ class Song(db.Model):
 
 
 class User(db.Model, UserMixin):
-        id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
 
-        username = db.Column(db.String(50), nullable=False, unique=True)
-        password = db.Column(db.String(255), nullable=False, server_default='')
+    username = db.Column(db.String(50), nullable=False, unique=True)
+    password = db.Column(db.String(255), nullable=False, server_default='')
 
-        email = db.Column(db.String(255), nullable=False, unique=True)
-        confirmed_at = db.Column(db.DateTime())
+    email = db.Column(db.String(255), nullable=False, unique=True)
+    confirmed_at = db.Column(db.DateTime())
 
-        active = db.Column('is_active', db.Boolean(), nullable=False, server_default='0')
-        first_name = db.Column(db.String(100), nullable=False, server_default='')
-        last_name = db.Column(db.String(100), nullable=False, server_default='')
+    active = db.Column('is_active', db.Boolean(), nullable=False, server_default='0')
+    first_name = db.Column(db.String(100), nullable=False, server_default='')
+    last_name = db.Column(db.String(100), nullable=False, server_default='')
 
 
 class Version(db.Model):
