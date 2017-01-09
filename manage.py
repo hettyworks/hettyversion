@@ -2,8 +2,9 @@ from flask_script import Manager, Server
 from flask_migrate import Migrate, MigrateCommand
 from hettyversion.database import db
 from hettyversion import create_app
-from hettyversion.models import Song
+from hettyversion.models import Song, Version
 from hettyversion.data.scrape_songs import get_song_names
+from hettyversion.data.dev import get_song_id, get_song_versions
 
 app = create_app()
 app.app_context().push() # set default context
@@ -30,6 +31,26 @@ def load_songdata():
         s.name = name
         s.band_id = 1
         db.session.add(s)
+    db.session.commit()
+
+
+@manager.command
+def load_hoodvers():
+    # Get Harry Hood song_id
+    
+    meta = db.metadata
+    for table in meta.sorted_tables:
+        if table.name == 'version':
+            print('Clearing table: version.')
+            db.session.execute(table.delete())
+    db.session.commit()
+
+    song_id = get_song_id(db, 'Harry Hood')
+    for version in get_song_versions('Harry Hood'):
+        v = Version()
+        v.title = version
+        v.song_id = song_id
+        db.session.add(v)
     db.session.commit()
 
 if __name__ == '__main__':
