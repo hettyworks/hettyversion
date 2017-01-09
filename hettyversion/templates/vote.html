@@ -1,5 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Vote{% endblock %}
 {% block content %}
-    <h1>Vote</h1>
+<form method="POST" action="/vote/">
+  {{ form.csrf_token }}
+  {{ form.lhs_id }} {{ form.rhs_id }}
+  {{ form.lhs }} {{ form.rhs }}
+</form>
 {% endblock %}
