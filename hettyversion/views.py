@@ -1,7 +1,10 @@
 from flask import redirect, Blueprint, render_template
-from flask_user import login_required
+from flask_user import login_required, current_user
+from hettyversion.models import Vote
+from hettyversion.database import db
 from hettyversion.forms import VersionForm, VoteForm
 from hettyversion.versions import get_candidate, fight_versions
+from datetime import datetime
 
 frontend = Blueprint('frontend', __name__)
 
@@ -16,13 +19,25 @@ def create_version():
         return redirect('/success')
     return render_template('new_version.html', form=form)
 
+def add_vote(lhs_id, rhs_id, winner):
+    v = Vote(lhs=lhs_id, rhs=rhs_id, winner=winner, created_by=current_user.id, created=datetime.now())
+    db.session.add(v)
+    db.session.commit()
+
+
 @frontend.route('/vote/', methods=['GET', 'POST'])
 def present_vote():
     form = VoteForm()
     if form.validate_on_submit():
+        lhs_id = int(form.lhs_id.data)
+        rhs_id = int(form.rhs_id.data)
         if form.lhs.data:
+            fight_versions(lhs_id, rhs_id, lhs_id)
+            add_vote(lhs_id, rhs_id, lhs_id)
             return redirect('/lhs-wins')
         elif form.rhs.data:
+            fight_versions(lhs_id, rhs_id, rhs_id)
+            add_vote(lhs_id, rhs_id, rhs_id)
             return redirect('/rhs-wins')
     else:
         lhs, rhs = get_candidate()

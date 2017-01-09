@@ -10,21 +10,22 @@
   <body>
     <div id="header">
       {% block header %}
-        <ul class="main-navigation">
-          <li><a href="/">Home</a></li>
-          <li><a href="/members">Members Area</a></li>
-          <li><a href="/versions">Add Version</a></li>
-          <li><a href="/admin">Admin Area</a></li>
-        </ul>
+	<ul class="main-navigation">
+	  <li><a href="/">Home</a></li>
+	  <li><a href="/members">Members Area</a></li>
+	  <li><a href="/vote">Vote</a></li>
+	  <li><a href="/versions">Add Version</a></li>
+	  <li><a href="/admin">Admin Area</a></li>
+	</ul>
       {% endblock %}
     </div>
     {% with messages = get_flashed_messages() %}
       {% if messages %}
-        <ul class=flashes>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
+	<ul class=flashes>
+	{% for message in messages %}
+	  <li>{{ message }}</li>
+	{% endfor %}
+	</ul>
       {% endif %}
     {% endwith %}
     <div id="content">{% block content %}{% endblock %}</div>
