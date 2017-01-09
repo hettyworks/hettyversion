@@ -56,7 +56,10 @@ def get_candidate(band_id=1):
     # looking for a pair that current_user.id has not already rated
     # present the first found
     # this logic is dumb as can be at present (poor performance)
-    user_id = current_user.id if current_user else 0
+    try:
+        user_id = current_user.id if current_user else 0
+    except AttributeError:
+        user_id = 0
     for song_id, in db.session.query(Song.song_id).filter(Song.band_id == 1).all():
         versions = db.session.query(Version).filter(Version.song_id == song_id).all()
         if versions:
