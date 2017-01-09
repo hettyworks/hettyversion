@@ -1,6 +1,7 @@
+from sqlalchemy import and_, or_
 from enum import Enum
 from hettyversion.database import db
-from hettyversion.models import Version
+from hettyversion.models import Version, Song, Vote
 from trueskill import Rating, rate_1vs1
 from flask_user import current_user, login_required
 
@@ -54,13 +55,17 @@ def get_candidate(band_id=1):
     # choose a version, iterate through the rest of the versions,
     # looking for a pair that current_user.id has not already rated
     # present the first found
-    for song_id in db.session.query(Song.song_id).filter(Song.band_id == band_id):
-        versions = db.session.query(Version.version_id).filter(Version.song_id == song_id)
-        for lhs in versions:
-            for rhs in versions:
+    # this logic is dumb as can be at present (poor performance)
+    user_id = current_user.id if current_user else 0
+    for song_id, in db.session.query(Song.song_id).filter(Song.band_id == 1).all():
+        versions = db.session.query(Version.version_id).filter(Version.song_id == song_id).all()
+        if versions:
+            print(versions)
+        for lhs, in versions:
+            for rhs, in versions:
                 if lhs != rhs:
                     if db.session.query(Vote).\
-                       filter(and_(Vote.created_by == current_user.id,
+                       filter(and_(Vote.created_by == user_id,
                                    or_(and_(Vote.lhs == lhs, Vote.rhs == rhs),
                                        and_(Vote.lhs == rhs, Vote.rhs == lhs)))).count() == 0:
                         # user hasn't voted
