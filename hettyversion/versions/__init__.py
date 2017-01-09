@@ -58,16 +58,18 @@ def get_candidate(band_id=1):
     # this logic is dumb as can be at present (poor performance)
     user_id = current_user.id if current_user else 0
     for song_id, in db.session.query(Song.song_id).filter(Song.band_id == 1).all():
-        versions = db.session.query(Version.version_id).filter(Version.song_id == song_id).all()
+        versions = db.session.query(Version).filter(Version.song_id == song_id).all()
         if versions:
             print(versions)
-        for lhs, in versions:
-            for rhs, in versions:
+        for lhs in versions:
+            for rhs in versions:
                 if lhs != rhs:
                     if db.session.query(Vote).\
                        filter(and_(Vote.created_by == user_id,
-                                   or_(and_(Vote.lhs == lhs, Vote.rhs == rhs),
-                                       and_(Vote.lhs == rhs, Vote.rhs == lhs)))).count() == 0:
+                                   or_(and_(Vote.lhs == lhs.version_id,
+                                            Vote.rhs == rhs.version_id),
+                                       and_(Vote.lhs == rhs.version_id,
+                                            Vote.rhs == lhs.version_id)))).count() == 0:
                         # user hasn't voted
                         return lhs, rhs
     raise Exception("Couldn't find a pair for user")
