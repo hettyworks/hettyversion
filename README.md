@@ -116,5 +116,3 @@ Flask-Admin is available here
 * `python manage.py db upgrade`
 * `python manage.py load_songdata`
 * `python manage.py runserver`
-
-testing github/slack
