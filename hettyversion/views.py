@@ -29,6 +29,7 @@ def update_rating(lhs_id, rhs_id, winner):
     add_vote(lhs_id, rhs_id, winner)
 
 @frontend.route('/vote/', methods=['GET', 'POST'])
+@login_required
 def present_vote():
     form = VoteForm()
     if form.validate_on_submit():
