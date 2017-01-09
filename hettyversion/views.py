@@ -24,6 +24,9 @@ def add_vote(lhs_id, rhs_id, winner):
     db.session.add(v)
     db.session.commit()
 
+def update_rating(lhs_id, rhs_id, winner):
+    fight_versions(lhs_id, rhs_id, winner)
+    add_vote(lhs_id, rhs_id, winner)
 
 @frontend.route('/vote/', methods=['GET', 'POST'])
 def present_vote():
@@ -32,12 +35,10 @@ def present_vote():
         lhs_id = int(form.lhs_id.data)
         rhs_id = int(form.rhs_id.data)
         if form.lhs.data:
-            fight_versions(lhs_id, rhs_id, lhs_id)
-            add_vote(lhs_id, rhs_id, lhs_id)
+            update_rating(lhs_id, rhs_id, lhs_id)
             return redirect('/lhs-wins')
         elif form.rhs.data:
-            fight_versions(lhs_id, rhs_id, rhs_id)
-            add_vote(lhs_id, rhs_id, rhs_id)
+            update_rating(lhs_id, rhs_id, rhs_id)
             return redirect('/rhs-wins')
     else:
         lhs, rhs = get_candidate()
