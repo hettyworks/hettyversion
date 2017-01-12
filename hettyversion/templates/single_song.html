@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ song.name }} - All Versions{% endblock %}
+{% block content %}
+    <h1>hettyversion</h1>
+    <h2>{{ song.name }} - All Versions</h2>
+    <pre>Song: {{ song }}</pre>
+    <ul>
+    {% for version in versions %}
+    	<li><a href="/versions/{{ version.version_id }}">{{ version.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
