@@ -116,3 +116,7 @@ Flask-Admin is available here
 * `python manage.py db upgrade`
 * `python manage.py load_songdata`
 * `python manage.py runserver`
+
+### Future
+
+* Minor, but we should think about truncating tables rather than emptying them when recreating demo content, because the various indexes don't reset to 1 otherwise
