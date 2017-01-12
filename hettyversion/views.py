@@ -54,16 +54,22 @@ def bands_page():
 
 @frontend.route('/bands/<band_id>')
 def single_band(band_id):
-    band = db.session.query(Band).filter(Band.band_id==band_id)
-    songs = db.session.query(Song).filter(Song.band_id==band_id)
+    band = db.session.query(Band).filter(Band.band_id==band_id).one()
+    songs = db.session.query(Song).filter(Song.band_id==band_id).all()
     return render_template('single_band.html', band=band, songs=songs)
 
 
 @frontend.route('/songs/<song_id>')
 def single_song(song_id):
-    song = db.session.query(Song).filter(Song.song_id==song_id)
-    versions = db.session.query(Version).filter(Version.song_id==song_id)
+    song = db.session.query(Song).filter(Song.song_id==song_id).one()
+    versions = db.session.query(Version).filter(Version.song_id==song_id).all()
     return render_template('single_song.html', song=song, versions=versions)
+
+
+@frontend.route('/versions/<version_id>')
+def single_version(version_id):
+    version = db.session.query(Version).filter(Version.version_id==version_id).one()
+    return render_template('single_version.html', version=version)
 
 
 @frontend.route('/vote-result/')
