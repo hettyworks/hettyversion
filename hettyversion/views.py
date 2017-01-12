@@ -1,4 +1,4 @@
-from flask import redirect, Blueprint, render_template
+from flask import redirect, Blueprint, render_template, session
 from flask_user import login_required, current_user
 from hettyversion.models import Vote
 from hettyversion.database import db
@@ -35,16 +35,29 @@ def present_vote():
     if form.validate_on_submit():
         lhs_id = int(form.lhs_id.data)
         rhs_id = int(form.rhs_id.data)
-        if form.lhs.data:
-            update_rating(lhs_id, rhs_id, lhs_id)
-            return redirect('/lhs-wins')
-        elif form.rhs.data:
-            update_rating(lhs_id, rhs_id, rhs_id)
-            return redirect('/rhs-wins')
+        (winner_id, loser_id) = (lhs_id, rhs_id) if form.lhs.data else (rhs_id, lhs_id)
+        update_rating(lhs_id, rhs_id, winner_id)
+        session['winner_id'] = winner_id
+        session['loser_id'] = loser_id
+        return redirect('/vote-result')
     else:
         lhs, rhs = get_candidate()
         form.init_candidate(lhs, rhs)
         return render_template('vote.html', form=form)
+
+@frontend.route('/vote-result/')
+@login_required
+def vote_result():
+    try:
+        winner_id = session['winner_id']
+        loser_id = session['loser_id']
+    except KeyError:
+        return redirect('/vote')
+
+    session.pop('winner_id')
+    session.pop('loser_id')
+
+    return render_template('vote_result.html', winner=winner_id, loser=loser_id)
 
 @frontend.route('/members/', methods=['GET'])
 @login_required
