@@ -1,6 +1,6 @@
 from flask import redirect, Blueprint, render_template, session
 from flask_user import login_required, current_user
-from hettyversion.models import Vote, Band
+from hettyversion.models import Vote, Band, Song
 from hettyversion.database import db
 from hettyversion.forms import VersionForm, VoteForm
 from hettyversion.versions import get_candidate, fight_versions
@@ -50,6 +50,14 @@ def present_vote():
 def bands_page():
     bands = db.session.query(Band).all()
     return render_template('band_list.html', bands=bands)
+
+
+@frontend.route('/bands/<band_id>')
+def single_band_page(band_id):
+    band = db.session.query(Band).filter(Band.band_id==band_id)
+    songs = db.session.query(Song).filter(Song.band_id==band_id)
+    return render_template('single_band.html', band=band, songs=songs)
+
 
 @frontend.route('/vote-result/')
 @login_required
