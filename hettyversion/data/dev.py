@@ -12,6 +12,22 @@ def get_song_id(db, name):
     return result.fetchone().song_id
 
 
+def get_version_by_id(db, id):
+    meta = db.metadata
+    for table in meta.sorted_tables:
+        if table.name == 'version':
+            s = select([table]).where(table.c.version_id == id)
+            result = db.session.execute(s)
+    return result.fetchone()
+
+def get_song_by_id(db, id):
+    meta = db.metadata
+    for table in meta.sorted_tables:
+        if table.name == 'song':
+            s = select([table]).where(table.c.song_id == id)
+            result = db.session.execute(s)
+    return result.fetchone()
+
 def get_song_versions(name):
     error_count = 0
     opener = urllib.request.FancyURLopener({})

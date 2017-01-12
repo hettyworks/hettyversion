@@ -1,10 +1,11 @@
 from flask import redirect, Blueprint, render_template, session
 from flask_user import login_required, current_user
-from hettyversion.models import Vote
+from hettyversion.models import Vote, Version
 from hettyversion.database import db
 from hettyversion.forms import VersionForm, VoteForm
 from hettyversion.versions import get_candidate, fight_versions
 from datetime import datetime
+from hettyversion.data.dev import get_version_by_id, get_song_by_id
 
 frontend = Blueprint('frontend', __name__)
 
@@ -51,13 +52,17 @@ def vote_result():
     try:
         winner_id = session['winner_id']
         loser_id = session['loser_id']
+
+        session.pop('winner_id')
+        session.pop('loser_id')
     except KeyError:
         return redirect('/vote')
 
-    session.pop('winner_id')
-    session.pop('loser_id')
+    winner = get_version_by_id(db, winner_id)
+    loser = get_version_by_id(db, loser_id)
+    song = get_song_by_id(db, winner.song_id)
 
-    return render_template('vote_result.html', winner=winner_id, loser=loser_id)
+    return render_template('vote_result.html', winner=winner, loser=loser, song=song)
 
 @frontend.route('/members/', methods=['GET'])
 @login_required
