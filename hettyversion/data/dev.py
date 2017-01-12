@@ -3,6 +3,15 @@ from bs4 import BeautifulSoup
 import urllib.request
 
 
+def get_band_id(db, name):
+    meta = db.metadata
+    for table in meta.sorted_tables:
+        if table.name == 'band':
+            s = select([table]).where(table.c.name == name)
+            result = db.session.execute(s)
+    return result.fetchone().band_id    
+
+
 def get_song_id(db, name):
     meta = db.metadata
     for table in meta.sorted_tables:

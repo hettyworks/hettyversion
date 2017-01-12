@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}All Bands{% endblock %}
+{% block content %}
+    <h1>hettyversion</h1>
+    <h2>All Bands</h2>
+    <pre>{{ bands }}</pre>
+    <ul>
+    {% for band in bands %}
+    	<li><a href="/bands/{{ band.band_id }}">{{ band.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
