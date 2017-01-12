@@ -6,6 +6,7 @@ class Band(db.Model):
     band_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     desc = db.Column(db.Text)
+    slug = db.Column(db.String(128))
 
 
 class Comment(db.Model):
@@ -21,6 +22,7 @@ class Song(db.Model):
     name = db.Column(db.String(128))
     desc = db.Column(db.String(128))
     band_id = db.Column(db.Integer, index=True)
+    slug = db.Column(db.String(128))
 
 
 class User(db.Model, UserMixin):
@@ -47,6 +49,7 @@ class Version(db.Model):
     created_by = db.Column(db.Integer)
     mu = db.Column(db.Float)
     sigma = db.Column(db.Float)
+    slug = db.Column(db.String(128))
 
 
 class Vote(db.Model):
