@@ -60,10 +60,7 @@ def bands_page():
 @frontend.route('/bands/<band_id>')
 def single_band(band_id):
     band = db.session.query(Band).filter(Band.band_id==band_id).one()
-    songs = db.session.query(Song.song_id,Song.name,func.count(Version.song_id).label('count')).outerjoin(Version, Song.song_id == Version.song_id).group_by(Song.song_id).filter(Song.band_id==band_id)
-    print(songs.column_descriptions)
-    songs = songs.all()
-    print(songs)
+    songs = db.session.query(Song.song_id,Song.name,func.count(Version.song_id).label('count')).outerjoin(Version, Song.song_id == Version.song_id).group_by(Song.song_id).filter(Song.band_id==band_id).all()
     return render_template('single_band.html', band=band, songs=songs)
 
 

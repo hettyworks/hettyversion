@@ -2,7 +2,7 @@
 {% block title %}{{ band.name }} - All Songs{% endblock %}
 {% block content %}
     <div>
-	    <h1>{{ band.name }} - All Songs <button type="button" class="btn btn-primary">All Bands</button></h1>
+	    <h1>{{ band.name }} - All Songs <a href="/bands"><button type="button" class="btn btn-primary">All Bands</button></a></h1>
 	</div>
     <div class="list-group">
     {% for song in songs %}
