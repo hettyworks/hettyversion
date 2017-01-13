@@ -61,8 +61,8 @@ def get_candidate(song_id):
     except AttributeError:
         user_id = 0
     versions = db.session.query(Version).filter(Version.song_id == song_id).all()
-    if versions:
-        print(versions)
+    # if versions:
+        # print(versions)
     for lhs in versions:
         for rhs in versions:
             if lhs != rhs:

@@ -6,7 +6,7 @@
 	</div>
     <div class="list-group">
     {% for song in songs %}
-    	<a class="list-group-item list-group-item-action" href="/songs/{{ song.song_id }}">{{ song.name }}</a>
+    	<a class="list-group-item list-group-item-action" href="/songs/{{ song.song_id }}"><span class="badge badge-default">{{ song.count }} {{ 'versions' if song.count != 1 else 'version' }}</span>{{ song.name }}</a>
     {% endfor %}
     </div>
 {% endblock %}
