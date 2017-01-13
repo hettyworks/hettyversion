@@ -1,4 +1,4 @@
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, or_, func
 from enum import Enum
 from hettyversion.database import db
 from hettyversion.models import Version, Song, Vote
@@ -60,7 +60,7 @@ def get_candidate(song_id):
         user_id = current_user.id if current_user else 0
     except AttributeError:
         user_id = 0
-    versions = db.session.query(Version).filter(Version.song_id == song_id).all()
+    versions = db.session.query(Version).filter(Version.song_id == song_id).order_by(func.rand()).all()
     # if versions:
         # print(versions)
     for lhs in versions:
