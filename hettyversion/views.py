@@ -68,7 +68,7 @@ def single_band(band_id):
 @frontend.route('/songs/<song_id>')
 def single_song(song_id):
     song = db.session.query(Song).filter(Song.song_id==song_id).one()
-    versions = db.session.query(Version.title,Version.mu,func.count(Vote.vote_id).label('count')).outerjoin(Vote, or_(Vote.lhs == Version.version_id, Vote.rhs == Version.version_id)).filter(Version.song_id==song_id).group_by(Version.version_id).order_by(Version.mu.desc()).all()
+    versions = db.session.query(Version.title,Version.version_id,Version.mu,func.count(Vote.vote_id).label('count')).outerjoin(Vote, or_(Vote.lhs == Version.version_id, Vote.rhs == Version.version_id)).filter(Version.song_id==song_id).group_by(Version.version_id).order_by(Version.mu.desc()).all()
     return render_template('single_song.html', song=song, versions=versions)
 
 
