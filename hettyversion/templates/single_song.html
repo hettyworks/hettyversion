@@ -4,7 +4,7 @@
     <h1>{{ song.name }} - All Versions <a href="/vote?song_id={{ song.song_id }}"><button type="button" class="btn btn-primary">Vote</button></a></h1>
     <div class="list-group">
     {% for version in versions %}
-    	<a class="list-group-item list-group-item-action" href="/versions/{{ version.version_id }}"><span class="badge badge-default">{{ version.mu|round(2) if version.mu is not none else 'UNRATED' }}</span>{{ version.title }}</a>
+    	<a class="list-group-item list-group-item-action" href="/versions/{{ version.version_id }}"><span class="badge badge-default">{{ version.count }} {{ 'Votes' if version.count != 1 else 'Vote' }}</span><span class="badge badge-default">{{ version.mu|round(2) if version.mu is not none else 'UNRATED' }}</span>{{ version.title }}</a>
     {% endfor %}
     </div>
 {% endblock %}
