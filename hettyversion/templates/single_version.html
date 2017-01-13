@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Version {{ version.title }}{% endblock %}
 {% block content %}
-    <h1>hettyversion</h1>
-    <h2>{{ version.title }}</h2>
-    <pre>Version: {{ version }}</pre>
+    <h1>{{ song.name }} <small class="text-muted">{{ version.title }}</small> <a href="/songs/{{ song.song_id }}"><button type="button" class="btn btn-primary">All {{ song.name }} Versions</button></a></h1>
+    <h2>Rating: {{ version.mu|round(2) if version.mu is not none else 'UNRATED' }}</h2>
 {% endblock %}

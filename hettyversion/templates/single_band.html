@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block title %}{{ band.name }} - All Songs{% endblock %}
 {% block content %}
-    <h1>hettyversion</h1>
-    <h2>{{ band.name }} - All Songs</h2>
-    <ul>
+    <div>
+	    <h1>{{ band.name }} - All Songs <button type="button" class="btn btn-primary">All Bands</button></h1>
+	</div>
+    <div class="list-group">
     {% for song in songs %}
-    	<li><a href="/songs/{{ song.song_id }}">{{ song.name }}</a></li>
+    	<a class="list-group-item list-group-item-action" href="/songs/{{ song.song_id }}">{{ song.name }}</a>
     {% endfor %}
-    </ul>
+    </div>
 {% endblock %}

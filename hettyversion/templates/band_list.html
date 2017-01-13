@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 {% block title %}All Bands{% endblock %}
 {% block content %}
-    <h1>hettyversion</h1>
-    <h2>All Bands</h2>
-    <ul>
+    <h1>All Bands</h1>
+    <div class="list-group">
     {% for band in bands %}
-    	<li><a href="/bands/{{ band.band_id }}">{{ band.name }}</a></li>
+    	<a class="list-group-item list-group-item-action" href="/bands/{{ band.band_id }}">{{ band.name }}</a>
     {% endfor %}
-    </ul>
+    </div>
 {% endblock %}

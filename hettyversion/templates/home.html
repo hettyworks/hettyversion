@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
+{% block bodyclass %}home{% endblock %}
 {% block content %}
-    <h1>hettyversion</h1>
-    <p>Welcome to hettyversion.</p>
+	<div class="jumbotron jumbotron-home">
+	    <h1>welcome to hettyversion</h1>
+	    <a href="/bands"><button type="button" class="btn btn-primary">Start Exploring</button></a>
+	</div>
 {% endblock %}

@@ -7,29 +7,34 @@
     <title>{% block title %}{% endblock %} - Hettyversion</title>
     {% endblock %}
   </head>
-  <body>
+  <body class="{% block bodyclass %}{% endblock %}">
     <div id="header">
-      {% block header %}
-    	<ul class="nav container">
-    	  <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-    	  <li class="nav-item"><a class="nav-link" href="/members">Members Area</a></li>
-    	  <li class="nav-item"><a class="nav-link" href="/vote">Vote</a></li>
-        <li class="nav-item"><a class="nav-link" href="/bands">Bands</a></li>
-    	  <li class="nav-item"><a class="nav-link" href="/versions">Add Version</a></li>
-        <li class="nav-item"><a class="nav-link" href="/admin">Admin Area</a></li>
-    	</ul>
-      {% endblock %}
+      <div class="container">
+        {% block header %}
+      	<ul class="nav">
+      	  <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+      	  <li class="nav-item"><a class="nav-link" href="/members">Members Area</a></li>
+          <li class="nav-item"><a class="nav-link" href="/bands">Bands</a></li>
+      	  <li class="nav-item disabled"><a class="nav-link" href="/versions">Add Version</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin">Admin Area</a></li>
+      	</ul>
+        {% endblock %}
+      </div>
     </div>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-	<ul class=flashes>
-	{% for message in messages %}
-	  <li>{{ message }}</li>
-	{% endfor %}
-	</ul>
-      {% endif %}
-    {% endwith %}
-    <div id="content" class="container">{% block content %}{% endblock %}</div>
+    <div id="content">
+        <div class="container">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="flashes">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+      </div>
+    </div>
     <div id="footer">
       <div class="container">
         {% block footer %}

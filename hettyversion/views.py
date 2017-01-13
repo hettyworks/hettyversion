@@ -73,7 +73,8 @@ def single_song(song_id):
 @frontend.route('/versions/<version_id>')
 def single_version(version_id):
     version = db.session.query(Version).filter(Version.version_id==version_id).one()
-    return render_template('single_version.html', version=version)
+    song = db.session.query(Song).filter(Song.song_id==version.song_id).one()
+    return render_template('single_version.html', version=version, song=song)
 
 
 @frontend.route('/vote-result/')
