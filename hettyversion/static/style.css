@@ -1,0 +1,18 @@
+.btn {
+	margin-bottom: 10px;
+}
+
+.nav>li {
+	display: inline-block;
+}
+
+#header {
+    border-bottom: 1px solid #bbb;
+}
+
+#footer {
+    border-top: 1px solid #bbb;
+    padding: 10px;
+    background: #404040;
+    color: white;
+}
