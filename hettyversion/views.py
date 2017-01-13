@@ -6,7 +6,7 @@ from hettyversion.forms import VersionForm, VoteForm
 from hettyversion.versions import get_candidate, fight_versions
 from datetime import datetime
 from hettyversion.data.dev import get_version_by_id, get_song_by_id
-from sqlalchemy import func
+from sqlalchemy import func, or_
 
 frontend = Blueprint('frontend', __name__)
 
@@ -73,9 +73,8 @@ def single_song(song_id):
 
 @frontend.route('/versions/<version_id>')
 def single_version(version_id):
-    version = db.session.query(Version).filter(Version.version_id==version_id).one()
-    song = db.session.query(Song).filter(Song.song_id==version.song_id).one()
-    return render_template('single_version.html', version=version, song=song)
+    version = db.session.query(Version.title,Version.mu,Song.name.label('song_name'),Song.song_id).outerjoin(Song, Song.song_id == Version.song_id).filter(Version.version_id==version_id).one()
+    return render_template('single_version.html', version=version)
 
 
 @frontend.route('/vote-result/')
