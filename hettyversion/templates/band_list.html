@@ -4,7 +4,7 @@
     <h1>All Bands</h1>
     <div class="list-group">
     {% for band in bands %}
-    	<a class="list-group-item list-group-item-action" href="/bands/{{ band.band_id }}">{{ band.name }}</a>
+    	<a class="list-group-item list-group-item-action" href="/bands/{{ band.band_id }}"><span class="badge badge-default">{{ band.count }} {{ 'songs' if band.count != 1 else 'song' }}</span>{{ band.name }}</a>
     {% endfor %}
     </div>
 {% endblock %}

@@ -53,7 +53,7 @@ def present_vote():
 
 @frontend.route('/bands/')
 def bands_page():
-    bands = db.session.query(Band).all()
+    bands = db.session.query(Band.name,Band.band_id,func.count(Song.song_id).label('count')).outerjoin(Song, Band.band_id == Song.band_id).group_by(Band.band_id).all()
     return render_template('band_list.html', bands=bands)
 
 
