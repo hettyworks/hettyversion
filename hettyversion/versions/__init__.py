@@ -49,7 +49,7 @@ def init_rating(v):
     db.session.commit()
     return v
 
-def get_candidate(band_id=1):
+def get_candidate(song_id):
     # for current_user.id
     # lookup songs that have at least 2 versions, choose one
     # choose a version, iterate through the rest of the versions,
@@ -60,19 +60,18 @@ def get_candidate(band_id=1):
         user_id = current_user.id if current_user else 0
     except AttributeError:
         user_id = 0
-    for song_id, in db.session.query(Song.song_id).filter(Song.band_id == 1).all():
-        versions = db.session.query(Version).filter(Version.song_id == song_id).all()
-        if versions:
-            print(versions)
-        for lhs in versions:
-            for rhs in versions:
-                if lhs != rhs:
-                    if db.session.query(Vote).\
-                       filter(and_(Vote.created_by == user_id,
-                                   or_(and_(Vote.lhs == lhs.version_id,
-                                            Vote.rhs == rhs.version_id),
-                                       and_(Vote.lhs == rhs.version_id,
-                                            Vote.rhs == lhs.version_id)))).count() == 0:
-                        # user hasn't voted
-                        return lhs, rhs
+    versions = db.session.query(Version).filter(Version.song_id == song_id).all()
+    if versions:
+        print(versions)
+    for lhs in versions:
+        for rhs in versions:
+            if lhs != rhs:
+                if db.session.query(Vote).\
+                   filter(and_(Vote.created_by == user_id,
+                               or_(and_(Vote.lhs == lhs.version_id,
+                                        Vote.rhs == rhs.version_id),
+                                   and_(Vote.lhs == rhs.version_id,
+                                        Vote.rhs == lhs.version_id)))).count() == 0:
+                    # user hasn't voted
+                    return lhs, rhs
     raise Exception("Couldn't find a pair for user")

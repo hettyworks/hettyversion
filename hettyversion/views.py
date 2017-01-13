@@ -1,4 +1,4 @@
-from flask import redirect, Blueprint, render_template, session
+from flask import redirect, Blueprint, render_template, session, request
 from flask_user import login_required, current_user
 from hettyversion.models import Vote, Band, Song, Version
 from hettyversion.database import db
@@ -42,7 +42,11 @@ def present_vote():
         session['loser_id'] = loser_id
         return redirect('/vote-result')
     else:
-        lhs, rhs = get_candidate()
+        song_id = request.args.get('song_id')
+        if song_id is None:
+            raise Exception("song_id not provided in query string.")
+        print('song_id: ' + song_id)
+        lhs, rhs = get_candidate(song_id)
         form.init_candidate(lhs, rhs)
         return render_template('vote.html', form=form)
 
