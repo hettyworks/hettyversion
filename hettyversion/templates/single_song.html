@@ -3,9 +3,10 @@
 {% block content %}
     <h1>hettyversion</h1>
     <h2>{{ song.name }} - All Versions</h2>
-    <ul>
+    <a href="/vote"><button type="button" class="btn btn-primary">Vote</button></a>
+    <div class="list-group">
     {% for version in versions %}
-    	<li><a href="/versions/{{ version.version_id }}">{{ version.title }}</a></li>
+    	<a class="list-group-item list-group-item-action" href="/versions/{{ version.version_id }}">{{ version.title }}</a>
     {% endfor %}
-    </ul>
+    </div>
 {% endblock %}
