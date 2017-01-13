@@ -39,9 +39,10 @@ def present_vote():
         rhs_id = int(form.rhs_id.data)
         (winner_id, loser_id) = (lhs_id, rhs_id) if form.lhs.data else (rhs_id, lhs_id)
         update_rating(lhs_id, rhs_id, winner_id)
-        session['winner_id'] = winner_id
-        session['loser_id'] = loser_id
-        return redirect('/vote-result')
+        winner = get_version_by_id(db, winner_id)
+        loser = get_version_by_id(db, loser_id)
+        song = get_song_by_id(db, winner.song_id)
+        return render_template('vote_result.html', winner=winner, loser=loser, song=song)
     else:
         song_id = request.args.get('song_id')
         if song_id is None:
@@ -76,24 +77,6 @@ def single_version(version_id):
     version = db.session.query(Version.title,Version.mu,Song.name.label('song_name'),Song.song_id).outerjoin(Song, Song.song_id == Version.song_id).filter(Version.version_id==version_id).one()
     return render_template('single_version.html', version=version)
 
-
-@frontend.route('/vote-result/')
-@login_required
-def vote_result():
-    try:
-        winner_id = session['winner_id']
-        loser_id = session['loser_id']
-
-        session.pop('winner_id')
-        session.pop('loser_id')
-    except KeyError:
-        return redirect('/vote')
-
-    winner = get_version_by_id(db, winner_id)
-    loser = get_version_by_id(db, loser_id)
-    song = get_song_by_id(db, winner.song_id)
-
-    return render_template('vote_result.html', winner=winner, loser=loser, song=song)
 
 @frontend.route('/members/', methods=['GET'])
 @login_required
