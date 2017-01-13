@@ -1,8 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-<form method="POST" action="/vote/">
+<div class="jumbotron">
+	<h1>Which version is better?</h1>
+</div>
+<form method="POST" action="/vote/" class="vote-form">
   {{ form.csrf_token }}
-  {{ form.lhs_id }} {{ form.rhs_id }}
-  {{ form.lhs }} {{ form.rhs }}
+  <div class="col-sm-6">
+  <h2>{{ lhs.title }}</h2>
+  <a href="{{ lhs.url if lhs.url else 'http://#' }}"><button type="button" class="btn btn-primary">Media</button></a><br />
+  {{ form.lhs_id }}
+  {{ form.lhs }}
+  </div>
+  <div class="col-sm-6">
+  <h2>{{ rhs.title }}</h2>
+  <a href="{{ rhs.url if rhs.url else 'http://#' }}"><button type="button" class="btn btn-primary">Media</button></a><br />
+  {{ form.rhs_id }}
+  {{ form.rhs }}
+  </div>
 </form>
 {% endblock %}

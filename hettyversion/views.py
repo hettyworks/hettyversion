@@ -49,7 +49,7 @@ def present_vote():
         print('song_id: ' + song_id)
         lhs, rhs = get_candidate(song_id)
         form.init_candidate(lhs, rhs)
-        return render_template('vote.html', form=form)
+        return render_template('vote.html', form=form, lhs=lhs, rhs=rhs)
 
 @frontend.route('/bands/')
 def bands_page():
