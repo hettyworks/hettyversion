@@ -17,3 +17,5 @@ services:
       - db
     environment:
       HETTYVERSION_MYSQL_IP: db
+      USER_ENABLE_CONFIRM_EMAIL: 'False'
+      USER_ENABLE_EMAIL: 'True'
