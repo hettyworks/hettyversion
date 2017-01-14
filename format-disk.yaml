@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: format-disk
+spec:
+  template:
+    metadata:
+      name: format-disk
+    spec:
+      containers:
+        - name: format-disk
+          image: busybox
+          command: ["rm", "-rf", "/data-to-format/*"]
+          volumeMounts:
+            - mountPath: /data-to-format
+              name: mysql-persistent-storage
+      restartPolicy: Never
+      volumes:
+      - name: mysql-persistent-storage
+        gcePersistentDisk:
+          # This disk must already exist.
+          pdName: mysql-disk
+          fsType: ext4

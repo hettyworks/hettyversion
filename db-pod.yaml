@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql
+  labels:
+    name: mysql
+spec:
+  containers:
+    - env:
+      #- name: MYSQL_DATABASE
+      #  value: hettyversion
+      - name: MYSQL_ROOT_PASSWORD
+        value: root
+      image: mysql:5.7.17
+      name: db
+      ports:
+        - containerPort: 3306
+          protocol: TCP
+      volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mysql-persistent-storage
+  volumes:
+    - name: mysql-persistent-storage
+      gcePersistentDisk:
+        # This disk must already exist.
+        pdName: mysql-disk
+        fsType: ext4
