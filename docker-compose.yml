@@ -9,7 +9,9 @@ services:
       - 3306:3306
   app:
     build: .
-    environment:
-      HETTYVERSION_MYSQL_IP: 192.168.1.2
     ports:
       - 80:80
+    links:
+      - db
+    environment:
+      HETTYVERSION_MYSQL_IP: db

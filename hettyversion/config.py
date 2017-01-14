@@ -2,7 +2,7 @@ import os
 
 class base_config(object):
     #SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
-    mysql_ip = os.getenv('HETTYVERSION_MYSQL_IP', '192.168.99.100');
+    mysql_ip = os.getenv('HETTYVERSION_MYSQL_IP', '192.168.99.100')
 
     SQLALCHEMY_DATABASE_URI = 'mysql://root:root@{0}/hettyversion'.format(mysql_ip);
 
