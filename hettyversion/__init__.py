@@ -10,7 +10,7 @@ from hettyversion.models import User
 
 
 def create_app(config=base_config):
-    app = Flask(__name__)
+    app = Flask(__name__, static_path='/hettyversion/static')
     app.secret_key = 'some secret key'
     app.config.from_object(config)
     app.register_blueprint(frontend)
