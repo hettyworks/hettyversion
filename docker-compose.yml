@@ -7,6 +7,8 @@ services:
       MYSQL_DATABASE: hettyversion
     ports:
       - 3306:3306
+    volumes:
+       - ./mysql-data:/var/lib/mysql
   app:
     build: .
     ports:
