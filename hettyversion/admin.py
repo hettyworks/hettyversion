@@ -9,7 +9,7 @@ import hettyversion.models
 class AuthModelView(ModelView):
 
     def is_accessible(self):
-        return current_user.is_authenticated
+        return current_user.is_authenticated and current_user.has_roles(['admin'])
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
