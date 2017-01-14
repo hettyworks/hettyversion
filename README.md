@@ -4,11 +4,11 @@
 
 ```
 docker-compose up -d
-pip3.4 install -r requirements.txt
-python3.4 manage.py db upgrade
-python3.4 manage.py load_songdata
-python3.4 manage.py runserver
+docker-compose run app python manage.py db upgrade
+docker-compose run app python manage.py load_songdata
 ```
+
+The app should now be available on http://YOUR-DOCKER-HOST:5001 (<http://localhost:5001/> on OSX and <http://192.168.99.100:5001> when haxin)
 
 ### Flask-Mail note (required)
 
@@ -68,7 +68,7 @@ Flask-Admin is available here
 
 ### Questions
 
-* How will we manage scores? 
+* How will we manage scores?
   * http://trueskill.org/
 
 ### Future
