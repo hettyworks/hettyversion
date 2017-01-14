@@ -7,12 +7,12 @@ metadata:
 spec:
   containers:
     - env:
-      #- name: MYSQL_DATABASE
-      #  value: hettyversion
+      - name: MYSQL_DATABASE
+        value: hettyversion
       - name: MYSQL_ROOT_PASSWORD
         value: root
       image: mysql:5.7.17
-      name: db
+      name: mysql
       ports:
         - containerPort: 3306
           protocol: TCP
