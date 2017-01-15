@@ -29,3 +29,16 @@
 * Update user permissions: `sudo usermod -aG docker $USER`
 * Log out and back in
 * Test install without sudo: `docker run hello-world`
+
+## Install latest docker-compose
+
+* Find desired repository: https://github.com/docker/compose/releases
+* curl docker-compose (replace curl for different repository): `curl -L https://github.com/docker/compose/releases/download/1.10.0-rc2/docker-compose-`uname -s`-`uname -m` > ~/Downloads/docker-compose`
+* Move to /usr/local/bin: `sudo mv ~/Downloads/docker-compose /usr/local/bin/docker-compose`
+* Update permissions: `chmod +x /usr/local/bin/docker-compose`
+
+## Run project setup
+
+```docker-compose up -d
+docker-compose run app python manage.py db upgrade
+docker-compose run app python manage.py load_demo```
