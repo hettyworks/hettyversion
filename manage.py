@@ -52,23 +52,32 @@ def grant_role(user_id, role_id):
 
 @manager.command
 def load_demo():
+    clear_data()
     load_bands()
     load_songdata(band_id=get_band_id(db, 'Phish'))
     load_hoodvers()
 
 
-@manager.command
-def load_songdata(band_id=1):
-    """
-    Load songs from phish.net/songs into db
-    """
-
+def clear_data():
     meta = db.metadata
+    for table in meta.sorted_tables:
+        if table.name == 'version':
+            print('Clear table %s', table)
+            db.session.execute(table.delete())
     for table in meta.sorted_tables:
         if table.name == 'song':
             print('Clear table %s', table)
             db.session.execute(table.delete())
+    for table in meta.sorted_tables:
+        if table.name == 'band':
+            print('Clear table %s', table)
+            db.session.execute(table.delete())
     db.session.commit()
+
+def load_songdata(band_id=1):
+    """
+    Load songs from phish.net/songs into db
+    """
     for name in get_song_names():
         s = Song()
         s.name = name
@@ -77,39 +86,21 @@ def load_songdata(band_id=1):
     db.session.commit()
 
 
-@manager.command
 def load_bands():
-    meta = db.metadata
-    for table in meta.sorted_tables:
-        if table.name == 'band':
-            print('Clear table %s', table)
-            db.session.execute(table.delete())
-    db.session.commit()
     b = Band()
     b.name = 'Phish'
     db.session.add(b)
-    db.session.commit()
     b = Band()
     b.name = 'Sting'
     db.session.add(b)
-    db.session.commit()
     b = Band()
     b.name = 'Katy Perry'
     db.session.add(b)
     db.session.commit()
 
 
-@manager.command
 def load_hoodvers():
     # Get Harry Hood song_id
-
-    meta = db.metadata
-    for table in meta.sorted_tables:
-        if table.name == 'version':
-            print('Clearing table: version.')
-            db.session.execute(table.delete())
-    db.session.commit()
-
     song_id = get_song_id(db, 'Harry Hood')
     for version in get_song_versions('Harry Hood'):
         v = Version()
