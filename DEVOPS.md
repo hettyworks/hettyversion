@@ -10,6 +10,10 @@ $ kubectl expose pod mysql --port=3306
 $ make gcr
 $ make create-deploy
 $ make deploy
+$ kubectl get pods
+# find the hv-deployment-... pod
+$ kubectl exec hv-deployment-... python manage.py db upgrade
+$ kubectl exec hv-deployment-... python manage.py db load_demo
 ```
 
 # Update + Deploy App
@@ -17,4 +21,14 @@ $ make deploy
 ```
 $ make gcr
 $ make deploy
+```
+
+# Access gcloud
+
+```
+$ gcloud init
+$ gcloud container clusters list
+$ gcloud container clusters get-credentials hettyworks
+$ gcloud auth application-default login
+$ kubectl get pods
 ```
