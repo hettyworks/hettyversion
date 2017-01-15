@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hv-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: hettyversion-app
+    spec:
+      containers:
+        - env:
+          - name: HETTYVERSION_MYSQL_IP
+            value: mysql
+          - name: USER_ENABLE_CONFIRM_EMAIL
+            value: 'False'
+          - name: USER_ENABLE_EMAIL
+            value: 'True'
+          image: gcr.io/316443988803/hettyversion_app:0498870
+          name: hettyversion-app
+          ports:
+            - containerPort: 80
+              protocol: TCP
