@@ -24,6 +24,6 @@ def create_app(config=base_config):
     db_adapter = SQLAlchemyAdapter(db, User)
     user_manager = UserManager(db_adapter, app)
 
-    sslify = SSLify(app)
+    #sslify = SSLify(app, skips=[''])
 
     return app
