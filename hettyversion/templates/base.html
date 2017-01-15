@@ -11,13 +11,21 @@
     <div id="header">
       <div class="container">
         {% block header %}
-      	<ul class="nav">
+      	<ul class="nav navbar-left">
       	  <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
       	  <li class="nav-item"><a class="nav-link" href="/members">Members Area</a></li>
           <li class="nav-item"><a class="nav-link" href="/bands">Bands</a></li>
       	  <li class="nav-item disabled"><a class="nav-link" href="/versions">Add Version</a></li>
           <li class="nav-item"><a class="nav-link" href="/admin">Admin Area</a></li>
       	</ul>
+        <ul class="nav navbar-right">
+          {% if current_user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="/user/sign-out">Sign Out</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="/user/sign-in">Sign In</a></li>
+            <li class="nav-item"><a class="nav-link" href="/user/register">Register</a></li>
+          {% endif %}
+        </ul>
         {% endblock %}
       </div>
     </div>
@@ -25,11 +33,9 @@
         <div class="container">
         {% with messages = get_flashed_messages() %}
           {% if messages %}
-            <ul class="flashes">
             {% for message in messages %}
-              <li>{{ message }}</li>
+              <div class="alert alert-warning">{{ message }}</div>
             {% endfor %}
-            </ul>
           {% endif %}
         {% endwith %}
         {% block content %}{% endblock %}

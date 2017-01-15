@@ -17,7 +17,7 @@ class base_config(object):
 
     USER_APP_NAME        = "HettyVersion"
 
-    USER_ENABLE_EMAIL              = os.getenv('USER_ENABLE_EMAIL') == 'True'
+    USER_ENABLE_EMAIL              = True
     USER_ENABLE_CONFIRM_EMAIL      = os.getenv('USER_ENABLE_CONFIRM_EMAIL') == 'True'
 
     DEBUG = os.getenv('HETTYVERSION_DEBUG') == 'True'
