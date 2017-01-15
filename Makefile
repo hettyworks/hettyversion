@@ -1,4 +1,4 @@
-revision=$(shell git rev-parse --short HEAD)
+revision=$(shell git rev-parse --short HEAD)$(build)
 
 gcr:
 	docker build -t gcr.io/316443988803/hettyversion_app:$(revision) .

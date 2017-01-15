@@ -1,0 +1,10 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: no-rules-map
+spec:
+  tls:
+    - secretName: hetty.io
+  backend:
+    serviceName: hettyversion-app
+    servicePort: 80
