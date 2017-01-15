@@ -17,6 +17,7 @@ $ kubectl get pods
 $ kubectl exec hv-deployment-... python manage.py db upgrade
 $ kubectl exec hv-deployment-... python manage.py db load_demo
 $ kubectl expose deployment hv-deployment --type="NodePort"
+$ kubectl create secret tls hetty.io --key=domain.key --cert=certs/chain.crt
 $ kubectl create -f https.yaml
 ```
 
