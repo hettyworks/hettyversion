@@ -26,6 +26,6 @@
 * Install docker: `sudo apt-get install docker-engine`
 * Start daemon: `sudo service docker start`
 * Test install: `sudo docker run hello-world`
-* Update user permissions: `sudo docker run hello-world`
+* Update user permissions: `sudo usermod -aG docker $USER`
 * Log out and back in
 * Test install without sudo: `docker run hello-world`
