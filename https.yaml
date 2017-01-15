@@ -6,5 +6,5 @@ spec:
   tls:
     - secretName: hetty.io
   backend:
-    serviceName: hettyversion-app
+    serviceName: hv-deployment
     servicePort: 80

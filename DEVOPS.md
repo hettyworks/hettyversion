@@ -10,10 +10,14 @@ $ kubectl expose pod mysql --port=3306
 $ make gcr
 $ make create-deploy
 $ make deploy
+$ echo -n "supersecurerootpw" > .mysql_password
+$ make secret
 $ kubectl get pods
 # find the hv-deployment-... pod
 $ kubectl exec hv-deployment-... python manage.py db upgrade
 $ kubectl exec hv-deployment-... python manage.py db load_demo
+$ kubectl expose deployment hv-deployment --type="NodePort"
+$ kubectl create -f https.yaml
 ```
 
 # Update + Deploy App
