@@ -1,7 +1,6 @@
-from flask import Flask
+from flask import Flask, request, redirect
 from flask_mail import Mail
 from flask_user import UserManager, SQLAlchemyAdapter
-from flask_sslify import SSLify
 
 from hettyversion.database import db
 from hettyversion.config import base_config
@@ -24,6 +23,11 @@ def create_app(config=base_config):
     db_adapter = SQLAlchemyAdapter(db, User)
     user_manager = UserManager(db_adapter, app)
 
-    #sslify = SSLify(app, skips=[''])
+    @app.before_request
+    def before_request():
+        if request.headers.get('X-Forwarded-Proto') == 'http':
+            url = request.url.replace('http://', 'https://', 1)
+            code = 301
+            return redirect(url, code=code)
 
     return app
