@@ -14,3 +14,6 @@ secret:
 	sed s/%PASSWORD%/$(shell cat .mysql_password)/ db-secret.yaml > /tmp/db-secret.yaml
 	kubectl create -f /tmp/db-secret.yaml
 	rm /tmp/db-secret.yaml
+
+pull-db-secret:
+	kubectl get secret mysql-user -o jsonpath={.data.password} > .mysql_password
