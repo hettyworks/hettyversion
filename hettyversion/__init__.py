@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_mail import Mail
 from flask_user import UserManager, SQLAlchemyAdapter
+from flask_sslify import SSLify
 
 from hettyversion.database import db
 from hettyversion.config import base_config
@@ -22,5 +23,7 @@ def create_app(config=base_config):
 
     db_adapter = SQLAlchemyAdapter(db, User)
     user_manager = UserManager(db_adapter, app)
+
+    sslify = SSLify(app)
 
     return app
