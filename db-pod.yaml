@@ -10,7 +10,10 @@ spec:
       - name: MYSQL_DATABASE
         value: hettyversion
       - name: MYSQL_ROOT_PASSWORD
-        value: root
+        valueFrom:
+          secretKeyRef:
+            name: mysql-user
+            key: password
       image: mysql:5.7.17
       name: mysql
       ports:

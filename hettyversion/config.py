@@ -3,8 +3,10 @@ import os
 class base_config(object):
     #SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
     mysql_ip = os.getenv('HETTYVERSION_MYSQL_IP', '192.168.99.100')
+    mysql_password = os.getenv('HETTYVERSION_MYSQL_PASS', 'root')
 
-    SQLALCHEMY_DATABASE_URI = 'mysql://root:root@{0}/hettyversion'.format(mysql_ip);
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:{0}@{1}/hettyversion'.format(mysql_password,
+                                                                         mysql_ip)
 
     MAIL_USERNAME =           os.getenv('MAIL_USERNAME',        'email@example.com')
     MAIL_PASSWORD =           os.getenv('MAIL_PASSWORD',        'password')

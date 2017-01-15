@@ -13,6 +13,11 @@ spec:
         - env:
           - name: HETTYVERSION_MYSQL_IP
             value: mysql
+          - name: HETTYVERSION_MYSQL_PASS
+            valueFrom:
+              secretKeyRef:
+                name: mysql-user
+                key: password
           - name: USER_ENABLE_CONFIRM_EMAIL
             value: 'False'
           - name: USER_ENABLE_EMAIL

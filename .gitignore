@@ -2,3 +2,4 @@
 *~
 venv/
 mysql-data/
+.mysql_password
