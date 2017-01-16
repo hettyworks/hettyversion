@@ -55,7 +55,7 @@ def load_demo():
     clear_data()
     load_bands()
     load_songdata(band_id=get_band_id(db, 'Phish'))
-    #load_yemvers()
+    load_yemvers()
     #load_vers()
 
 
