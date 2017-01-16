@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm, Form
-from wtforms import StringField, DateField, IntegerField, SubmitField, HiddenField, Label
+from wtforms import StringField, DateField, IntegerField, SubmitField, HiddenField, Label, TextAreaField, validators
 
 class VersionForm(FlaskForm):
     name = StringField('title')
@@ -19,3 +19,7 @@ class VoteForm(Form):
         self.rhs.label  = Label(None, rhs.title)
         self.lhs_id.data = lhs.version_id
         self.rhs_id.data = rhs.version_id
+
+
+class VersionCommentForm(FlaskForm):
+    body = TextAreaField(u'Comment Text', [validators.required(), validators.length(max=140)])

@@ -61,6 +61,22 @@ class Version(db.Model):
     sigma = db.Column(db.Float)
 
 
+class VersionComment(db.Model):
+    versioncomment_id = db.Column(db.Integer, primary_key=True)
+    version_id = db.Column(db.Integer, db.ForeignKey('version.version_id', ondelete='NO ACTION'))
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='NO ACTION'))
+    body = db.Column(db.Text)
+    comment_date = db.Column(db.DateTime())
+
+
+class VersionCommentVote(db.Model):
+    versioncommentvote_id = db.Column(db.Integer, primary_key=True)
+    version_id = db.Column(db.Integer, db.ForeignKey('version.version_id', ondelete='NO ACTION'))
+    voter_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='NO ACTION'))
+    value = db.Column(db.Integer)
+    vote_date = db.Column(db.DateTime())
+
+
 class Vote(db.Model):
     vote_id = db.Column(db.Integer, primary_key=True)
     lhs = db.Column(db.Integer)
