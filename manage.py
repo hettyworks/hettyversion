@@ -84,12 +84,6 @@ def load_songdata(band_id=1):
         s.name = name
         s.band_id = band_id
         db.session.add(s)
-        song_id = get_song_id(db, name)
-        for version in get_song_versions(name):
-            v = Version()
-            v.title = version
-            v.song_id = song_id
-            db.session.add(v)    
     db.session.commit()
 
 
@@ -124,19 +118,8 @@ def load_yemvers():
         v.title = version
         v.song_id = song_id
         db.session.add(v)
-    db.session.commit()
-
-def load_vers():
-    #load all versions by song_id
-    for name in get_song_names():
-        song_id = get_song_id(db, name)
-        for version in get_song_versions(name):
-            v = Version()
-            v.title = version
-            v.song_id = song_id
-            db.session.add(v)
-        db.session.commit()    
-             
+    db.session.commit() 
+            
 
 if __name__ == '__main__':
     manager.run()
