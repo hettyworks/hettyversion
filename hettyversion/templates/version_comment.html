@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 {% block title %}New Version Comment{% endblock %}
 {% block content %}
+<div class="well">
 <form method="POST" action="/versions/{{ version.version_id }}/comment">
     {{ form.csrf_token }}
-    {{ form.body.label }} {{ form.body }}
-    <input type="submit" value="Go">
+	<div class="form-group">
+	    {{ form.body.label }}
+	    {{ form.body(class_="form-control") }}
+    </div>
+    <input type="submit" class="btn btn-primary" value="Post Comment">
 </form>
+</div>
 {% endblock %}
