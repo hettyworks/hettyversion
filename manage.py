@@ -55,8 +55,8 @@ def load_demo():
     clear_data()
     load_bands()
     load_songdata(band_id=get_band_id(db, 'Phish'))
-    #load_hoodvers()
-    load_vers()
+    load_yemvers()
+    #load_vers()
 
 
 def clear_data():
@@ -110,7 +110,18 @@ def load_hoodvers():
         db.session.add(v)
     db.session.commit()
 
-@manager.command
+def load_yemvers():
+    # test for get yem song_id
+    song_id = get_song_id(db, 'You Enjoy Myself')
+    for version in get_song_versions('You Enjoy Myself'):
+        v = Version()
+        v.title = version
+        v.song_id = song_id
+        db.session.add(v)
+    db.session.commit()
+
+
+
 def load_vers():
     #load all versions by song_id
 
