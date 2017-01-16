@@ -55,7 +55,7 @@ def load_demo():
     clear_data()
     load_bands()
     load_songdata(band_id=get_band_id(db, 'Phish'))
-    load_yemvers()
+    #load_yemvers()
     #load_vers()
 
 
@@ -84,6 +84,12 @@ def load_songdata(band_id=1):
         s.name = name
         s.band_id = band_id
         db.session.add(s)
+        song_id = get_song_id(db, name)
+        for version in get_song_versions(name):
+            v = Version()
+            v.title = version
+            v.song_id = song_id
+            db.session.add(v)    
     db.session.commit()
 
 
@@ -120,18 +126,8 @@ def load_yemvers():
         db.session.add(v)
     db.session.commit()
 
-
-
 def load_vers():
     #load all versions by song_id
-
-    meta = db.metadata
-    for table in meta.sorted_tables:
-        if table.name == 'version':
-            print('Clearing table: version.')
-            db.session.execute(table.delete())
-    db.session.commit()
-
     for name in get_song_names():
         song_id = get_song_id(db, name)
         for version in get_song_versions(name):
