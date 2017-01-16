@@ -10,6 +10,10 @@ docker-compose run app python manage.py load_songdata
 
 The app should now be available on http://YOUR-DOCKER-HOST:5001 (<http://localhost:5001/> on OSX and <http://192.168.99.100:5001> when haxin)
 
+## Updating remote database
+
+`kubectl exec <pod-name> docker-compose run app python manage.py db upgrade` etc.
+
 ### Flask-Mail note (required)
 
 You must create an email app password and store that and your gmail address in MAIL_PASSWORD and MAIL_USERNAME, respectively: `https://security.google.com/settings/security/apppasswords`
