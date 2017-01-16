@@ -70,11 +70,19 @@ def single_band(band_id):
 @frontend.route('/songs/<song_id>')
 def single_song(song_id):
     song = db.session.query(Song).filter(Song.song_id==song_id).one()
-    versions = db.session.query(Version.title,Version.version_id,Version.mu,func.count(Vote.vote_id).label('count'), \
-        func.count(VersionComment.versioncomment_id).label('vc_count')).outerjoin(Vote, or_(Vote.lhs == Version.version_id, \
-        Vote.rhs == Version.version_id)).outerjoin(VersionComment, VersionComment.version_id == Version.version_id) \
-        .filter(Version.song_id==song_id).group_by(Version.version_id).order_by(Version.mu.desc(),func.count(Vote.vote_id).desc(), \
-        func.count(VersionComment.versioncomment_id).desc()).all()
+
+    versions = db.session.query(Version.title,Version.version_id,Version.mu,func.count(Vote.vote_id).label('count')) \
+        .outerjoin(Vote, or_(Vote.lhs == Version.version_id, Vote.rhs == Version.version_id)) \
+        .filter(Version.song_id==song_id) \
+        .group_by(Version.version_id).subquery('versions')
+
+    versions_with_comments = db.session.query(versions, func.count(VersionComment.versioncomment_id).label('vc_count')) \
+        .outerjoin(VersionComment, VersionComment.version_id == versions.c.version_id) \
+        .group_by(versions.c.version_id) \
+        .order_by(versions.c.mu.desc(),versions.c.count.desc(),func.count(VersionComment.versioncomment_id).desc())
+
+    versions = versions_with_comments.all()
+
     return render_template('single_song.html', song=song, versions=versions)
 
 
