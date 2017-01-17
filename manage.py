@@ -5,7 +5,7 @@ from hettyversion import create_app
 from hettyversion.models import Song, User, Version, Band, Role
 from hettyversion.data.scrape_songs import get_song_names
 from hettyversion.data import get_song_id, get_song_versions, get_band_id
-from hettyversion.data.phishin import phishin_load_all
+from hettyversion.data.phishin import PhishinLoader
 from pprint import pprint
 
 app = create_app()
@@ -15,6 +15,9 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 manager.add_command('runserver', Server())
+
+
+pl = PhishinLoader()
 
 
 @manager.command
@@ -54,7 +57,7 @@ def grant_role(user_id, role_id):
 
 @manager.command
 def load_phish():
-    phishin_load_all()
+    pl.load_all()
 
 
 @manager.command
