@@ -5,7 +5,7 @@ import json
 from pprint import PrettyPrinter
 
 from hettyversion.database import db
-from hettyversion.models import Band, Song
+from hettyversion.models import Band, Song, Version
 
 
 pp = PrettyPrinter(indent=4)
@@ -39,6 +39,7 @@ class PhishinLoader:
             s = Song()
             s.name = song['title']
             s.band_id = self.band_id
+            s.phishin_id = song['id']
             db.session.add(s)
         db.session.commit()
         print('Songs loaded.')
@@ -46,11 +47,31 @@ class PhishinLoader:
 
     def load_all_versions(self):
         versions = self.get_all_versions()
+
+        # for version in versions:
+        #     v = Version()
+        #     v.title = 
         print('Versions loaded.')
 
 
     def get_all_versions(self):
+        versions_master = []
+
+        i = 1400
+        while i < 1401:  # sanity check
+            opener = urllib.request.FancyURLopener({})
+            url = "http://phish.in/api/v1/tracks?page={}".format(str(i))
+            f = opener.open(url)
+            soup_versions = BeautifulSoup(f, 'html.parser')
+            json_versions = json.loads(str(soup_versions))
+            if not json_versions['data']:
+                break
+
+            versions_master = versions_master + json_versions['data']
+            i += 1
+        pp.pprint(versions_master)
         print('Versions scraped.')
+        return versions_master
 
 
     def get_all_songs(self):

@@ -21,6 +21,7 @@ class Song(db.Model):
     name = db.Column(db.String(128))
     desc = db.Column(db.String(128))
     band_id = db.Column(db.Integer, db.ForeignKey("band.band_id"), index=True)
+    phishin_id = db.Column(db.Integer)
 
 
 class User(db.Model, UserMixin):
@@ -59,6 +60,7 @@ class Version(db.Model):
     created_by = db.Column(db.Integer)
     mu = db.Column(db.Float)
     sigma = db.Column(db.Float)
+    phishin_id = db.Column(db.Integer)
 
 
 class VersionComment(db.Model):
