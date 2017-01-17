@@ -12,7 +12,7 @@ The app should now be available on http://YOUR-DOCKER-HOST:5001 (<http://localho
 
 ## Updating remote database
 
-`kubectl exec <pod-name> docker-compose run app python manage.py db upgrade` etc.
+`kubectl exec <pod-name> python manage.py db upgrade` etc.
 
 ### Flask-Mail note (required)
 
