@@ -12,15 +12,33 @@ pp = PrettyPrinter(indent=4)
 
 
 class PhishinLoader:
+    songs = []
+    versions = []
+    shows = []
+    venues = []
+
+
     def __init__(self):
         pass
 
 
     def load_all(self):
-        self.clear_db()
-        self.create_phish()
-        self.load_all_songs()
-        self.load_all_versions()
+        self.songs = self.get_all_songs()
+        self.versions = self.get_all_versions()
+        self.shows = self.get_all_shows()
+        self.venues = self.get_all_venues()
+        self.data_to_json()
+
+
+    def data_to_json(self):
+        master_dict = {}
+        master_dict['songs'] = self.songs
+        master_dict['versions'] = self.versions
+        master_dict['shows'] = self.shows
+        master_dict['venues'] = self.venues
+
+        with open('phishin.json', 'w+') as outfile:
+            json.dump(master_dict, outfile, indent=2)
 
 
     def create_phish(self):
@@ -32,29 +50,47 @@ class PhishinLoader:
         self.band_id = b.band_id
 
 
-    def load_all_songs(self):
-        songs = self.get_all_songs()
+    def get_all_venues(self):
+        venues_master = []
 
-        for song in songs:
-            s = Song()
-            s.name = song['title']
-            s.band_id = self.band_id
-            s.phishin_id = song['id']
-            db.session.add(s)
-        db.session.commit()
-        print('Songs loaded.')
+        i = 33
+        while i < 75:  # sanity check
+            opener = urllib.request.FancyURLopener({})
+            url = "http://phish.in/api/v1/venues?page={}".format(str(i))
+            f = opener.open(url)
+            soup = BeautifulSoup(f, 'html.parser')
+            soup_list = json.loads(str(soup))
+            if not soup_list['data']:
+                break
 
-
-    def load_all_versions(self):
-        versions = self.get_all_versions()
-
-        # for version in versions:
-        #     v = Version()
-        #     v.title = 
-        print('Versions loaded.')
+            venues_master = venues_master + soup_list['data']
+            i += 1
+        pp.pprint(venues_master)
+        print('Venues scraped.')
+        return venues_master
 
 
-    def get_all_versions(self):
+    def get_all_shows(self):
+        shows_master = []
+
+        i = 76
+        while i < 150:  # sanity check
+            opener = urllib.request.FancyURLopener({})
+            url = "http://phish.in/api/v1/shows?page={}".format(str(i))
+            f = opener.open(url)
+            soup = BeautifulSoup(f, 'html.parser')
+            soup_list = json.loads(str(soup))
+            if not soup_list['data']:
+                break
+
+            shows_master = shows_master + soup_list['data']
+            i += 1
+        pp.pprint(shows_master)
+        print('Shows scraped.')
+        return shows_master
+
+
+    def get_all_versions(self):  # has to be line by line
         versions_master = []
 
         i = 1400
@@ -62,12 +98,12 @@ class PhishinLoader:
             opener = urllib.request.FancyURLopener({})
             url = "http://phish.in/api/v1/tracks?page={}".format(str(i))
             f = opener.open(url)
-            soup_versions = BeautifulSoup(f, 'html.parser')
-            json_versions = json.loads(str(soup_versions))
-            if not json_versions['data']:
+            soup = BeautifulSoup(f, 'html.parser')
+            soup_list = json.loads(str(soup))
+            if not soup_list['data']:
                 break
 
-            versions_master = versions_master + json_versions['data']
+            versions_master = versions_master + soup_list['data']
             i += 1
         pp.pprint(versions_master)
         print('Versions scraped.')
@@ -82,27 +118,12 @@ class PhishinLoader:
             opener = urllib.request.FancyURLopener({})
             url = "http://phish.in/api/v1/songs?page={}".format(str(i))
             f = opener.open(url)
-            soup_songs = BeautifulSoup(f, 'html.parser')
-            json_songs = json.loads(str(soup_songs))
-            if not json_songs['data']:
+            soup = BeautifulSoup(f, 'html.parser')
+            soup_list = json.loads(str(soup))
+            if not soup_list['data']:
                 break
 
-            songs_master = songs_master + json_songs['data']
+            songs_master = songs_master + soup_list['data']
             i += 1
         print('Songs scraped.')
         return songs_master
-
-
-    def clear_db(self):
-        metadata = MetaData(db.engine)
-        metadata.reflect()
-        for table in metadata.tables.values():
-            for fk in table.foreign_keys:
-                db.engine.execute(DropConstraint(fk.constraint))
-        
-        meta = db.metadata
-        for table in meta.sorted_tables:
-                print('Clear table: {}'.format(table.name))
-                db.session.execute(table.delete())
-        db.session.commit()
-        print('DB cleared.')

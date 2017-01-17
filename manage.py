@@ -56,7 +56,7 @@ def grant_role(user_id, role_id):
 
 
 @manager.command
-def load_phish():
+def get_all_data():
     pl.load_all()
 
 
