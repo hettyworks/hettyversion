@@ -55,9 +55,9 @@ def load_demo():
     clear_data()
     load_bands()
     load_songdata(band_id=get_band_id(db, 'Phish'))
-    load_yemvers()
-    #load_vers()
-
+    load_hoodvers()
+    load_yemvers()    
+    #load_versiondata(band_id=get_band_id(db, 'Phish'))
 
 def clear_data():
     meta = db.metadata
@@ -85,6 +85,24 @@ def load_songdata(band_id=1):
         s.band_id = band_id
         db.session.add(s)
     db.session.commit()
+
+def load_versiondata(band_id=1):
+
+    # load all versions (hundreds) of all songs (~1000) from phish.net/songs
+    # takes upwards of 20 minutes to run
+    for name in get_song_names():
+        s = Song()
+        s.name = name
+        s.band_id = band_id
+        db.session.add(s)
+        db.session.commit() 
+        song_id = get_song_id(db, s.name)
+        for version in get_song_versions(s.name):
+            v = Version()
+            v.title = version
+            v.song_id = song_id
+            db.session.add(v)
+    db.session.commit()    
 
 
 def load_bands():
@@ -119,6 +137,8 @@ def load_yemvers():
         v.song_id = song_id
         db.session.add(v)
     db.session.commit() 
+
+
             
 
 if __name__ == '__main__':
