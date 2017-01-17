@@ -4,7 +4,7 @@ from hettyversion.database import db
 from hettyversion import create_app
 from hettyversion.models import Song, User, Version, Band, Role
 from hettyversion.data.scrape_songs import get_song_names
-from hettyversion.data.dev import get_song_id, get_song_versions, get_band_id
+from hettyversion.data import get_song_id, get_song_versions, get_band_id
 from pprint import pprint
 
 app = create_app()

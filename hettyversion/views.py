@@ -5,7 +5,7 @@ from hettyversion.database import db
 from hettyversion.forms import VersionForm, VoteForm, VersionCommentForm
 from hettyversion.versions import get_candidate, fight_versions
 from datetime import datetime
-from hettyversion.data.dev import get_version_by_id, get_song_by_id
+from hettyversion.data import get_version_by_id, get_song_by_id
 from sqlalchemy import func, or_
 
 frontend = Blueprint('frontend', __name__)
