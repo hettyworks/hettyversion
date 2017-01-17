@@ -38,6 +38,7 @@ class PhishinLoader:
         master_dict['venues'] = self.venues
 
         with open('phishin.json', 'w+') as outfile:
+            outfile.truncate()
             json.dump(master_dict, outfile, indent=2)
 
 
@@ -65,8 +66,6 @@ class PhishinLoader:
 
             venues_master = venues_master + soup_list['data']
             i += 1
-        pp.pprint(venues_master)
-        print('Venues scraped.')
         return venues_master
 
 
@@ -85,29 +84,7 @@ class PhishinLoader:
 
             shows_master = shows_master + soup_list['data']
             i += 1
-        pp.pprint(shows_master)
-        print('Shows scraped.')
         return shows_master
-
-
-    def get_all_versions(self):  # has to be line by line
-        versions_master = []
-
-        i = 1400
-        while i < 1401:  # sanity check
-            opener = urllib.request.FancyURLopener({})
-            url = "http://phish.in/api/v1/tracks?page={}".format(str(i))
-            f = opener.open(url)
-            soup = BeautifulSoup(f, 'html.parser')
-            soup_list = json.loads(str(soup))
-            if not soup_list['data']:
-                break
-
-            versions_master = versions_master + soup_list['data']
-            i += 1
-        pp.pprint(versions_master)
-        print('Versions scraped.')
-        return versions_master
 
 
     def get_all_songs(self):
@@ -125,5 +102,49 @@ class PhishinLoader:
 
             songs_master = songs_master + soup_list['data']
             i += 1
-        print('Songs scraped.')
         return songs_master
+
+
+    def get_all_versions(self):  # has to be line by line
+        versions_temp = []
+
+        i = 1400
+        while i < 1401:  # sanity check
+            opener = urllib.request.FancyURLopener({})
+            url = "http://phish.in/api/v1/tracks?page={}".format(str(i))
+            f = opener.open(url)
+            soup = BeautifulSoup(f, 'html.parser')
+            soup_list = json.loads(str(soup))
+            if not soup_list['data']:
+                break
+
+            versions_temp = versions_temp + soup_list['data']
+            i += 1
+
+        versions_master = self.get_all_versions_singly(versions_temp)
+
+        return versions_master
+
+
+    def get_all_versions_singly(self, versions_temp):
+        versions_master = []
+
+        for version in versions_temp:
+            new_version = self.get_one_version(version['id'])
+            if new_version: versions_master.append(new_version)
+            break
+
+        return versions_master
+
+
+    def get_one_version(self, version_id):
+        opener = urllib.request.FancyURLopener({})
+        url = "http://phish.in/api/v1/tracks/{}".format(version_id)
+        f = opener.open(url)
+        soup = BeautifulSoup(f, 'html.parser')
+        soup_list = json.loads(str(soup))
+
+        if not soup_list['data']:
+            return False
+
+        return soup_list['data']
