@@ -61,16 +61,20 @@ def load_demo():
 def clear_data():
     meta = db.metadata
     for table in meta.sorted_tables:
+        if table.name == 'version_comment':
+            print('Clear table: versioncomment')
+            db.session.execute(table.delete())
+    for table in meta.sorted_tables:
         if table.name == 'version':
-            print('Clear table %s', table)
+            print('Clear table: version')
             db.session.execute(table.delete())
     for table in meta.sorted_tables:
         if table.name == 'song':
-            print('Clear table %s', table)
+            print('Clear table: song')
             db.session.execute(table.delete())
     for table in meta.sorted_tables:
         if table.name == 'band':
-            print('Clear table %s', table)
+            print('Clear table: band')
             db.session.execute(table.delete())
     db.session.commit()
 
