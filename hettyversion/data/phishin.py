@@ -17,10 +17,24 @@ def load_from_json(app):
     with open(target) as infile:
         data = json.load(infile)
 
-    load_songs(data['songs'])
-    load_versions(data['versions'])
     load_venues(data['venues'])
     load_shows(data['shows'])
+    load_songs(data['songs'])
+    load_versions(data['versions'])
+
+
+def load_venues(venues):
+    for venue in venues:
+        v = Venue()
+        v.name = venue['name']
+        v.location = venue['location']
+        v.phishin_id = venue['id']
+        db.session.add(s)
+    db.session.commit()
+
+
+def load_shows(shows):
+    pass
 
 
 def load_songs(songs):
@@ -28,14 +42,6 @@ def load_songs(songs):
 
 
 def load_versions(versions):
-    pass
-
-
-def load_venues(venues):
-    pass
-
-
-def load_shows(shows):
     pass
 
 
