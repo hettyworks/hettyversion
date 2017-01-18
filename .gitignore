@@ -5,3 +5,4 @@ mysql-data/
 .mysql_password
 *.key
 creds.json
+phishin.json

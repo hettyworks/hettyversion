@@ -5,7 +5,7 @@ from hettyversion.database import db
 from hettyversion.forms import VersionForm, VoteForm, VersionCommentForm
 from hettyversion.versions import get_candidate, fight_versions
 from datetime import datetime
-from hettyversion.data.dev import get_version_by_id, get_song_by_id
+from hettyversion.data import get_version_by_id, get_song_by_id
 from sqlalchemy import func, or_
 
 frontend = Blueprint('frontend', __name__)
@@ -62,8 +62,9 @@ def bands_page():
 @frontend.route('/bands/<band_id>')
 def single_band(band_id):
     band = db.session.query(Band).filter(Band.band_id==band_id).one()
-    songs = db.session.query(Song.song_id,Song.name,func.count(Version.song_id).label('count')).outerjoin(Version, \
-        Song.song_id == Version.song_id).group_by(Song.song_id).filter(Song.band_id==band_id).all()
+    songs = db.session.query(Song.song_id,Song.name,func.count(Version.song_id).label('count')) \
+        .outerjoin(Version, Song.phishin_id == Version.song_id) \
+        .group_by(Song.song_id).filter(Song.band_id==band_id).all()
     return render_template('single_band.html', band=band, songs=songs)
 
 
@@ -71,9 +72,9 @@ def single_band(band_id):
 def single_song(song_id):
     song = db.session.query(Song).filter(Song.song_id==song_id).one()
 
-    versions = db.session.query(Version.title,Version.version_id,Version.mu,func.count(Vote.vote_id).label('count')) \
+    versions = db.session.query(Version.date,Version.version_id,Version.mu,func.count(Vote.vote_id).label('count')) \
         .outerjoin(Vote, or_(Vote.lhs == Version.version_id, Vote.rhs == Version.version_id)) \
-        .filter(Version.song_id==song_id) \
+        .filter(Version.song_id==song.phishin_id) \
         .group_by(Version.version_id).subquery('versions')
 
     versions_with_comments = db.session.query(versions, func.count(VersionComment.versioncomment_id).label('vc_count')) \
@@ -83,13 +84,15 @@ def single_song(song_id):
 
     versions = versions_with_comments.all()
 
+    print(versions)
+
     return render_template('single_song.html', song=song, versions=versions)
 
 
 @frontend.route('/versions/<version_id>')
 def single_version(version_id):
-    version = db.session.query(Version.title,Version.mu,Version.version_id,Song.name.label('song_name'),Song.song_id) \
-        .outerjoin(Song, Song.song_id == Version.song_id).filter(Version.version_id==version_id).one()
+    version = db.session.query(Version.date,Version.mu,Version.version_id,Song.name.label('song_name'),Song.song_id) \
+        .outerjoin(Song, Song.phishin_id == Version.song_id).filter(Version.version_id==version_id).one()
     comments = db.session.query(VersionComment.body,User.username.label('author')).outerjoin(User, User.id == VersionComment.author_id) \
         .filter(VersionComment.version_id==version_id).order_by(VersionComment.comment_date.desc()).all()
     return render_template('single_version.html', version=version, comments=comments)
