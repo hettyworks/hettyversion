@@ -22,7 +22,6 @@ class Song(db.Model):
     desc = db.Column(db.String(128))
     band_id = db.Column(db.Integer, db.ForeignKey("band.band_id"), index=True)
     phishin_id = db.Column(db.Integer)
-    show_id = db.Column(db.Integer, db.ForeignKey(""))
 
 
 class Venue(db.Model):
