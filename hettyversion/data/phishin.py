@@ -18,8 +18,7 @@ def load_from_json(app):
         data = json.load(infile)
 
     clear_db()
-    # band_id = create_phish()
-    band_id = 1
+    band_id = create_phish()
     load_venues(data['venues'])
     load_shows(data['shows'])
     load_songs(data['songs'], band_id)
