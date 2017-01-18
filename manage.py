@@ -55,9 +55,9 @@ def grant_role(user_id, role_id):
     db.session.commit()
 
 
-@manager.command
-def get_all_data():
-    pl.load_all()
+# @manager.command
+# def get_all_data():
+#     pl.load_all()
 
 
 @manager.command

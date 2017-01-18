@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import urllib.request
 import json
 from pprint import PrettyPrinter
+import time
 
 from hettyversion.database import db
 from hettyversion.models import Band, Song, Version
@@ -23,11 +24,19 @@ class PhishinLoader:
 
 
     def load_all(self):
+        start = time.time()
+        print('Scraping started.')
         self.songs = self.get_all_songs()
-        self.versions = self.get_all_versions()
+        print('{} songs scraped.'.format(len(self.songs)))
         self.shows = self.get_all_shows()
+        print('{} shows scraped.'.format(len(self.shows)))
         self.venues = self.get_all_venues()
+        print('{} venues scraped.'.format(len(self.venues)))
+        self.versions = self.get_all_versions()
+        print('{} versions scraped.'.format(len(self.versions)))
         self.data_to_json()
+        end = time.time()
+        print('Scraping completed in {0:.1f} seconds.'.format(end - start))
 
 
     def data_to_json(self):
@@ -39,7 +48,7 @@ class PhishinLoader:
 
         with open('phishin.json', 'w+') as outfile:
             outfile.truncate()
-            json.dump(master_dict, outfile, indent=2)
+            json.dump(master_dict, outfile)
 
 
     def create_phish(self):
@@ -54,7 +63,7 @@ class PhishinLoader:
     def get_all_venues(self):
         venues_master = []
 
-        i = 33
+        i = 1
         while i < 75:  # sanity check
             opener = urllib.request.FancyURLopener({})
             url = "http://phish.in/api/v1/venues?page={}".format(str(i))
@@ -72,7 +81,7 @@ class PhishinLoader:
     def get_all_shows(self):
         shows_master = []
 
-        i = 76
+        i = 1
         while i < 150:  # sanity check
             opener = urllib.request.FancyURLopener({})
             url = "http://phish.in/api/v1/shows?page={}".format(str(i))
@@ -90,7 +99,7 @@ class PhishinLoader:
     def get_all_songs(self):
         songs_master = []
 
-        i = 43
+        i = 1
         while i < 99:  # sanity check
             opener = urllib.request.FancyURLopener({})
             url = "http://phish.in/api/v1/songs?page={}".format(str(i))
@@ -108,8 +117,8 @@ class PhishinLoader:
     def get_all_versions(self):  # has to be line by line
         versions_temp = []
 
-        i = 1400
-        while i < 1401:  # sanity check
+        i = 1
+        while i < 2500:  # sanity check
             opener = urllib.request.FancyURLopener({})
             url = "http://phish.in/api/v1/tracks?page={}".format(str(i))
             f = opener.open(url)
@@ -132,7 +141,7 @@ class PhishinLoader:
         for version in versions_temp:
             new_version = self.get_one_version(version['id'])
             if new_version: versions_master.append(new_version)
-            break
+            # break
 
         return versions_master
 
