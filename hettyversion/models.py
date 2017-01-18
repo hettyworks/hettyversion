@@ -22,6 +22,7 @@ class Song(db.Model):
     desc = db.Column(db.String(128))
     band_id = db.Column(db.Integer, db.ForeignKey("band.band_id"), index=True)
     phishin_id = db.Column(db.Integer)
+    show_id = db.Column(db.Integer, db.ForeignKey("show.show_id"))
 
 
 class Venue(db.Model):
@@ -36,6 +37,19 @@ class Show(db.Model):
     phishin_id = db.Column(db.Integer)
     venue_id = db.Column(db.Integer, db.ForeignKey("venue.venue_id"))
     date = db.Column(db.String(128))
+
+class Version(db.Model):
+    version_id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(128))
+    date = db.Column(db.Date)
+    created = db.Column(db.DateTime)
+    song_id = db.Column(db.Integer, db.ForeignKey("song.song_id"))
+    url = db.Column(db.String(256))
+    created_by = db.Column(db.Integer)
+    mu = db.Column(db.Float)
+    sigma = db.Column(db.Float)
+    phishin_id = db.Column(db.Integer)
+    show_id = db.Column(db.Integer, db.ForeignKey("show.show_id"))
 
 
 class User(db.Model, UserMixin):
@@ -63,18 +77,6 @@ class UserRoles(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id', ondelete='CASCADE'))
     role_id = db.Column(db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE'))
-
-class Version(db.Model):
-    version_id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(128))
-    date = db.Column(db.Date)
-    created = db.Column(db.DateTime)
-    song_id = db.Column(db.Integer, db.ForeignKey("song.song_id"))
-    url = db.Column(db.String(256))
-    created_by = db.Column(db.Integer)
-    mu = db.Column(db.Float)
-    sigma = db.Column(db.Float)
-    phishin_id = db.Column(db.Integer)
 
 
 class VersionComment(db.Model):
