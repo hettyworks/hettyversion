@@ -15,8 +15,8 @@ class VoteForm(Form):
     rhs_id = HiddenField()
 
     def init_candidate(self, lhs, rhs):
-        self.lhs.label = Label(None, lhs.title)
-        self.rhs.label  = Label(None, rhs.title)
+        self.lhs.label = Label(None, lhs.date)
+        self.rhs.label  = Label(None, rhs.date)
         self.lhs_id.data = lhs.version_id
         self.rhs_id.data = rhs.version_id
 
