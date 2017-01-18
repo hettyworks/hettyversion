@@ -31,6 +31,13 @@ class Venue(db.Model):
     name = db.Column(db.String(128))
 
 
+class Show(db.Model):
+    show_id = db.Column(db.Integer, primary_key=True)
+    phishin_id = db.Column(db.Integer)
+    venue_id = db.Column(db.Integer, db.ForeignKey("venue.venue_id"))
+    date = db.Column(db.String(128))
+
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
 
