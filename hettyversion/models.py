@@ -22,7 +22,6 @@ class Song(db.Model):
     desc = db.Column(db.String(128))
     band_id = db.Column(db.Integer, index=True)
     phishin_id = db.Column(db.Integer)
-    show_id = db.Column(db.Integer)
 
 
 class Venue(db.Model):
@@ -40,7 +39,6 @@ class Show(db.Model):
 
 class Version(db.Model):
     version_id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(128))
     date = db.Column(db.Date)
     created = db.Column(db.DateTime)
     song_id = db.Column(db.Integer)

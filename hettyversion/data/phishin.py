@@ -17,10 +17,22 @@ def load_from_json(app):
     with open(target) as infile:
         data = json.load(infile)
 
+    # clear_db()
+    # band_id = create_phish()
+    band_id = 1
     load_venues(data['venues'])
     load_shows(data['shows'])
-    load_songs(data['songs'])
+    load_songs(data['songs'], band_id)
     load_versions(data['versions'])
+
+
+def create_phish():
+    b = Band()
+    b.name = 'Phish'
+    db.session.add(b)
+    db.session.commit()
+    db.session.refresh(b)
+    return b.band_id
 
 
 def load_venues(venues):
@@ -34,15 +46,34 @@ def load_venues(venues):
 
 
 def load_shows(shows):
-    pass
+    for show in shows:
+        s = Show()
+        s.phishin_id = shows['id']
+        s.venue_id = shows['venue_id']
+        s.date = shows['date']
+        db.session.add(s)
+    db.session.commit()
 
 
-def load_songs(songs):
-    pass
+def load_songs(songs, band_id):
+    for song in songs:
+        s = Song()
+        s.band_id = band_id
+        s.phishin_id = song['id']
+        # s.show_id = song['show_id']
+        s.name = song['name']
+        db.session.add(s)
+    db.session.commit()
 
 
 def load_versions(versions):
-    pass
+    for version in versions:
+        v = Version()
+        v.date = version['show_date']
+        v.song_id = version['song_ids'][0]  # might want to turn this into a join table to handle multiple song_ids
+        v.url = version['mp3']
+        v.phishin_id = version['id']
+        v.show_id = version['show_id']
 
 
 def clear_db():
@@ -97,15 +128,6 @@ class PhishinLoader:
         with open('phishin.json', 'w+') as outfile:
             outfile.truncate()
             json.dump(master_dict, outfile)
-
-
-    def create_phish(self):
-        b = Band()
-        b.name = 'Phish'
-        db.session.add(b)
-        db.session.commit()
-        db.session.refresh(b)
-        self.band_id = b.band_id
 
 
     def get_all_venues(self):
