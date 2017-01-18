@@ -7,6 +7,7 @@ class base_config(object):
 
     SQLALCHEMY_DATABASE_URI = 'mysql://root:{0}@{1}/hettyversion'.format(mysql_password,
                                                                          mysql_ip)
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     MAIL_USERNAME =           os.getenv('MAIL_USERNAME',        'email@example.com')
     MAIL_PASSWORD =           os.getenv('MAIL_PASSWORD',        'password')
