@@ -5,7 +5,7 @@ from hettyversion import create_app
 from hettyversion.models import Song, User, Version, Band, Role
 from hettyversion.data.scrape_songs import get_song_names
 from hettyversion.data import get_song_id, get_song_versions, get_band_id
-from hettyversion.data.phishin import PhishinLoader
+from hettyversion.data.phishin import PhishinLoader, load_from_json
 from pprint import pprint
 
 app = create_app()
@@ -66,6 +66,11 @@ def load_demo():
     load_bands()
     load_songdata(band_id=get_band_id(db, 'Phish'))
     load_hoodvers()
+
+
+@manager.command
+def load_all():
+    load_from_json(app)
 
 
 def clear_data():

@@ -6,10 +6,52 @@ from pprint import PrettyPrinter
 import time
 
 from hettyversion.database import db
-from hettyversion.models import Band, Song, Version
+from hettyversion.models import Band, Song, Version, Venue
 
 
 pp = PrettyPrinter(indent=4)
+
+
+def load_from_json(app):
+    target = app.root_path + '/data/phishin.json'
+    with open(target) as infile:
+        data = json.load(infile)
+
+    load_songs(data['songs'])
+    load_versions(data['versions'])
+    load_venues(data['venues'])
+    load_shows(data['shows'])
+
+
+def load_songs(songs):
+    pass
+
+
+def load_versions(versions):
+    pass
+
+
+def load_venues(venues):
+    pass
+
+
+def load_shows(shows):
+    pass
+
+
+def clear_db():
+    metadata = MetaData(db.engine)
+    metadata.reflect()
+    for table in metadata.tables.values():
+        for fk in table.foreign_keys:
+            db.engine.execute(DropConstraint(fk.constraint))
+    
+    meta = db.metadata
+    for table in meta.sorted_tables:
+            print('Clear table: {}'.format(table.name))
+            db.session.execute(table.delete())
+    db.session.commit()
+    print('DB cleared.')
 
 
 class PhishinLoader:
