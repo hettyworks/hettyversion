@@ -6,7 +6,7 @@ from pprint import PrettyPrinter
 import time
 
 from hettyversion.database import db
-from hettyversion.models import Band, Song, Version, Venue
+from hettyversion.models import Band, Song, Version, Venue, Show
 
 
 pp = PrettyPrinter(indent=4)
@@ -17,13 +17,24 @@ def load_from_json(app):
     with open(target) as infile:
         data = json.load(infile)
 
-    # clear_db()
+    clear_db()
     # band_id = create_phish()
     band_id = 1
     load_venues(data['venues'])
     load_shows(data['shows'])
     load_songs(data['songs'], band_id)
     load_versions(data['versions'])
+
+
+def load_venues(venues):
+    for venue in venues:
+        v = Venue()
+        # pp.pprint(venue)
+        v.name = venue['name']
+        v.location = venue['location']
+        v.phishin_id = venue['id']
+        db.session.add(v)
+    db.session.commit()
 
 
 def create_phish():
@@ -35,22 +46,12 @@ def create_phish():
     return b.band_id
 
 
-def load_venues(venues):
-    for venue in venues:
-        v = Venue()
-        v.name = venue['name']
-        v.location = venue['location']
-        v.phishin_id = venue['id']
-        db.session.add(s)
-    db.session.commit()
-
-
 def load_shows(shows):
     for show in shows:
         s = Show()
-        s.phishin_id = shows['id']
-        s.venue_id = shows['venue_id']
-        s.date = shows['date']
+        s.phishin_id = show['id']
+        s.venue_id = show['venue_id']
+        s.date = show['date']
         db.session.add(s)
     db.session.commit()
 
@@ -61,7 +62,7 @@ def load_songs(songs, band_id):
         s.band_id = band_id
         s.phishin_id = song['id']
         # s.show_id = song['show_id']
-        s.name = song['name']
+        s.name = song['title']
         db.session.add(s)
     db.session.commit()
 
@@ -74,6 +75,8 @@ def load_versions(versions):
         v.url = version['mp3']
         v.phishin_id = version['id']
         v.show_id = version['show_id']
+        db.session.add(v)
+    db.session.commit()
 
 
 def clear_db():
