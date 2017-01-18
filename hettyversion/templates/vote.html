@@ -7,13 +7,19 @@
   {{ form.csrf_token }}
   <div class="col-sm-6">
   <h2>{{ lhs.title }}</h2>
-  <a href="{{ lhs.url if lhs.url else 'http://#' }}"><button type="button" class="btn btn-primary">Media</button></a><br />
+  <audio controls>
+    <source{{ ' src=' + lhs.url if lhs.url else '' }} type="audio/mpeg">
+  Your browser does not support the audio element.
+  </audio>
   {{ form.lhs_id }}
   {{ form.lhs }}
   </div>
   <div class="col-sm-6">
   <h2>{{ rhs.title }}</h2>
-  <a href="{{ rhs.url if rhs.url else 'http://#' }}"><button type="button" class="btn btn-primary">Media</button></a><br />
+  <audio controls>
+    <source{{ ' src=' + rhs.url if rhs.url else '' }} type="audio/mpeg">
+  Your browser does not support the audio element.
+  </audio>
   {{ form.rhs_id }}
   {{ form.rhs }}
   </div>
