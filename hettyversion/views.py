@@ -31,9 +31,11 @@ def update_rating(lhs_id, rhs_id, winner):
     add_vote(lhs_id, rhs_id, winner)
 
 def get_random_phish_song():
-    return db.session.query(Song.song_id)\
+    song_id = db.session.query(Song.phishin_id)\
                      .join(Band, Band.band_id == Song.band_id) \
-                     .filter(Band.name == 'Phish').order_by(func.rand()).first().song_id
+                     .filter(Band.name == 'Phish').order_by(func.rand()).first().phishin_id
+    print(song_id)
+    return song_id
 
 @frontend.route('/vote/', methods=['GET', 'POST'])
 @login_required
