@@ -4,7 +4,7 @@ from hettyversion.database import db
 from hettyversion.models import Version, Song, Vote, Venue, Show
 from trueskill import Rating, rate_1vs1
 from flask_user import current_user, login_required
-
+from random import shuffle
 
 class Winner(Enum):
     LEFT = 1
@@ -67,8 +67,11 @@ def get_candidate(song_id):
                          .filter(Version.song_id == song_id).order_by(func.rand()).all()
     # if versions:
         # print(versions)
+
     for lhs in versions:
-        for rhs in versions:
+        other_versions = list(versions)
+        shuffle(other_versions)
+        for rhs in other_versions:
             if lhs != rhs:
                 if db.session.query(Vote).\
                    filter(and_(Vote.created_by == user_id,
