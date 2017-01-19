@@ -2,16 +2,17 @@
 {% block title %}{{ version.song_name }} - {{ version.date }}{% endblock %}
 {% block content %}
     <h1>{{ version.song_name }} <small class="text-muted">{{ version.date }}</small> <a href="/songs/{{ version.song_id }}"><button type="button" class="btn btn-primary">All {{ version.song_name }} Versions</button></a></h1>
+    <h2><small class="text-muted">{{version.venue_name }}, {{version.location}}</small></h2>
     <a href="/versions/{{ version.version_id }}/comment"><button type="button" class="btn btn-primary">Add a Comment</button></a>
     <h2>Rating: {{ version.mu|round(2) if version.mu is not none else 'UNRATED' }}</h2>
     {% if comments %}
     <div class="versioncomments">
     <h3>User Comments</h2>
     {% for comment in comments %}
-    	<blockquote class="blockquote">
-    		<p>{{ comment.body }}</p>
-    		<footer class="blockquote-footer">{{ comment.author }}</footer>
-    	</blockquote>
+	<blockquote class="blockquote">
+		<p>{{ comment.body }}</p>
+		<footer class="blockquote-footer">{{ comment.author }}</footer>
+	</blockquote>
     {% endfor %}
     </div>
     {% endif %}

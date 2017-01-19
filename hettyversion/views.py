@@ -1,6 +1,6 @@
 from flask import redirect, Blueprint, render_template, session, request, flash
 from flask_user import login_required, current_user
-from hettyversion.models import Vote, Band, Song, Version, VersionComment, User
+from hettyversion.models import Vote, Band, Song, Version, VersionComment, User, Venue, Show
 from hettyversion.database import db
 from hettyversion.forms import VersionForm, VoteForm, VersionCommentForm
 from hettyversion.versions import get_candidate, fight_versions
@@ -91,8 +91,11 @@ def single_song(song_id):
 
 @frontend.route('/versions/<version_id>')
 def single_version(version_id):
-    version = db.session.query(Version.date,Version.mu,Version.version_id,Song.name.label('song_name'),Song.song_id) \
-        .outerjoin(Song, Song.phishin_id == Version.song_id).filter(Version.version_id==version_id).one()
+    version = db.session.query(Version.date,Version.mu,Version.version_id,Song.name.label('song_name'),Song.song_id,Show.show_id,Venue.name.label('venue_name'),Venue.location) \
+        .join(Song, Song.phishin_id == Version.song_id) \
+        .join(Show, Show.phishin_id == Version.show_id) \
+        .join(Venue, Show.venue_id == Venue.phishin_id) \
+        .filter(Version.version_id==version_id).one()
     comments = db.session.query(VersionComment.body,User.username.label('author')).outerjoin(User, User.id == VersionComment.author_id) \
         .filter(VersionComment.version_id==version_id).order_by(VersionComment.comment_date.desc()).all()
     return render_template('single_version.html', version=version, comments=comments)
