@@ -3,25 +3,29 @@
 <div class="jumbotron">
 	<h1>Which version is better?</h1>
 </div>
+<center><h1>{{ lhs.name }}</h1></center>
+
 <form method="POST" action="/vote/" class="vote-form">
   {{ form.csrf_token }}
   <div class="col-sm-6">
-  <h2>{{ lhs.title }}</h2>
+  <h2><small class="text-muted">{{ lhs.venue_name }}, {{ lhs.location }}</small></h2>
+  <div>
   <audio controls>
     <source{{ ' src=' + lhs.url if lhs.url else '' }} type="audio/mpeg">
   Your browser does not support the audio element.
-  </audio>
+  </audio></div>
   {{ form.lhs_id }}
-  {{ form.lhs }}
+  {{ form.lhs(class="vote-button") }}
   </div>
   <div class="col-sm-6">
-  <h2>{{ rhs.title }}</h2>
+    <h2><small class="text-muted">{{ rhs.venue_name }}, {{ rhs.location }}</small></h2>
+    <div>
   <audio controls>
     <source{{ ' src=' + rhs.url if rhs.url else '' }} type="audio/mpeg">
   Your browser does not support the audio element.
-  </audio>
+  </audio></div>
   {{ form.rhs_id }}
-  {{ form.rhs }}
+  {{ form.rhs(class="vote-button") }}
   </div>
 </form>
 {% endblock %}
