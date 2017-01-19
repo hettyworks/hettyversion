@@ -2,7 +2,8 @@
 {% block title %}Home{% endblock %}
 {% block content %}
     <h1>hettyversion</h1>
-    <h2>The song is: <pre>{{ song }}</pre></h2>
-    <h2>The winner is: <pre>{{ winner }}</pre> :)</h2>
-    <h2>The loser is: <pre>{{ loser }}</pre> :(</h2>
+    <h2>The song is: <a href="/songs/{{song.song_id}}">{{ song.name }}</a></h2>
+    <h2>The winner is: <pre>{{ winner }}</pre></h2>
+    <h2>The loser is: <pre>{{ loser }}</pre></h2>
+    <h1><a href="/vote">Vote Again</a></h1>
 {% endblock %}

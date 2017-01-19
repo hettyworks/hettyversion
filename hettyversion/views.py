@@ -5,7 +5,7 @@ from hettyversion.database import db
 from hettyversion.forms import VersionForm, VoteForm, VersionCommentForm
 from hettyversion.versions import get_candidate, fight_versions
 from datetime import datetime
-from hettyversion.data import get_version_by_id, get_song_by_id
+from hettyversion.data import get_version_by_id, get_song_by_id, get_song_by_phishin_id
 from sqlalchemy import func, or_
 
 frontend = Blueprint('frontend', __name__)
@@ -34,7 +34,6 @@ def get_random_phish_song():
     song_id = db.session.query(Song.phishin_id)\
                      .join(Band, Band.band_id == Song.band_id) \
                      .filter(Band.name == 'Phish').order_by(func.rand()).first().phishin_id
-    print(song_id)
     return song_id
 
 @frontend.route('/vote/', methods=['GET', 'POST'])
@@ -48,7 +47,7 @@ def present_vote():
         update_rating(lhs_id, rhs_id, winner_id)
         winner = get_version_by_id(db, winner_id)
         loser = get_version_by_id(db, loser_id)
-        song = get_song_by_id(db, winner.song_id)
+        song = get_song_by_phishin_id(db, winner.song_id)
         return render_template('vote_result.html', winner=winner, loser=loser, song=song)
     else:
         song_id = request.args.get('song_id')
@@ -93,8 +92,6 @@ def single_song(song_id):
         .order_by(versions.c.mu.desc(),versions.c.count.desc(),func.count(VersionComment.versioncomment_id).desc())
 
     versions = versions_with_comments.all()
-
-    print(versions)
 
     return render_template('single_song.html', song=song, versions=versions)
 

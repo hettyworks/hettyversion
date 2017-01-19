@@ -1,7 +1,7 @@
 from sqlalchemy.sql import select
 from bs4 import BeautifulSoup
 import urllib.request
-
+from hettyversion.models import Song
 
 def get_band_id(db, name):
     meta = db.metadata
@@ -36,6 +36,10 @@ def get_song_by_id(db, id):
             s = select([table]).where(table.c.song_id == id)
             result = db.session.execute(s)
     return result.fetchone()
+
+def get_song_by_phishin_id(db, id):
+    return db.session.query(Song).filter(Song.phishin_id == id).one()
+
 
 def get_song_versions(name):
     error_count = 0
