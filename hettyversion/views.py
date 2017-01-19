@@ -22,7 +22,7 @@ def create_version():
     return render_template('new_version.html', form=form)
 
 def add_vote(lhs_id, rhs_id, winner):
-    v = Vote(lhs=lhs_id, rhs=rhs_id, winner=winner, created_by=current_user.id, created=datetime.now())
+    v = Vote(lhs=lhs_id, rhs=rhs_id, winner=winner, created_by=current_user.id, created=datetime.utcnow())
     db.session.add(v)
     db.session.commit()
 
@@ -113,7 +113,7 @@ def single_version(version_id):
 def new_versioncomment(version_id):
     form = VersionCommentForm()
     if form.validate_on_submit():
-        vc = VersionComment(version_id=version_id,author_id=current_user.id,body=form.body.data,comment_date=datetime.now())
+        vc = VersionComment(version_id=version_id,author_id=current_user.id,body=form.body.data,comment_date=datetime.utcnow())
         db.session.add(vc)
         db.session.commit()
         flash('You left a comment.')
