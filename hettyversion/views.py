@@ -30,6 +30,9 @@ def update_rating(lhs_id, rhs_id, winner):
     fight_versions(lhs_id, rhs_id, winner)
     add_vote(lhs_id, rhs_id, winner)
 
+def get_random_phish_song():
+    return db.session.query(Song.song_id).filter(Song.band_id == 1).order_by(func.rand()).first().song_id
+
 @frontend.route('/vote/', methods=['GET', 'POST'])
 @login_required
 def present_vote():
@@ -45,10 +48,13 @@ def present_vote():
         return render_template('vote_result.html', winner=winner, loser=loser, song=song)
     else:
         song_id = request.args.get('song_id')
-        if song_id is None:
-            raise Exception("song_id not provided in query string.")
-        print('song_id: ' + song_id)
-        lhs, rhs = get_candidate(song_id)
+        lhs, rhs = None, None
+        while lhs == None and rhs == None:
+            if song_id is None:
+                song_id = get_random_phish_song()
+            lhs, rhs = get_candidate(song_id)
+            if lhs == None or rhs == None:
+                song_id = None
         form.init_candidate(lhs, rhs)
         return render_template('vote.html', form=form, lhs=lhs, rhs=rhs)
 

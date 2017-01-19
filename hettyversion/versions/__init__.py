@@ -1,7 +1,7 @@
 from sqlalchemy import and_, or_, func
 from enum import Enum
 from hettyversion.database import db
-from hettyversion.models import Version, Song, Vote
+from hettyversion.models import Version, Song, Vote, Venue, Show
 from trueskill import Rating, rate_1vs1
 from flask_user import current_user, login_required
 
@@ -60,7 +60,11 @@ def get_candidate(song_id):
         user_id = current_user.id if current_user else 0
     except AttributeError:
         user_id = 0
-    versions = db.session.query(Version).filter(Version.song_id == song_id).order_by(func.rand()).all()
+    versions = db.session.query(Version.version_id,Version.date,Version.url,Song.name,Venue.name.label('venue_name'),Venue.location) \
+                         .join(Song, Song.phishin_id == Version.song_id) \
+                         .join(Show, Show.phishin_id == Version.show_id) \
+                         .join(Venue, Show.venue_id == Venue.phishin_id) \
+                         .filter(Version.song_id == song_id).order_by(func.rand()).all()
     # if versions:
         # print(versions)
     for lhs in versions:
@@ -74,4 +78,4 @@ def get_candidate(song_id):
                                         Vote.rhs == lhs.version_id)))).count() == 0:
                     # user hasn't voted
                     return lhs, rhs
-    raise Exception("Couldn't find a pair for user")
+    return None, None
