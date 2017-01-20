@@ -4,6 +4,8 @@
   <center><h1>{{ lhs.name }}</h1></center>
   <center><h2>Which version is better?</h2></center>
 </div>
+<div class="well well-sm">Tired of listening to {{ lhs.name }}? <a href="/vote/?exclude={{ lhs.song_id }}">Jump to a random song</a>.</div>
+
 
 <form method="POST" action="/vote/" class="vote-form">
   {{ form.csrf_token }}

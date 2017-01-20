@@ -23,10 +23,16 @@ def update_rating(lhs_id, rhs_id, winner):
     fight_versions(lhs_id, rhs_id, winner)
     add_vote(lhs_id, rhs_id, winner)
 
-def get_random_phish_song():
-    song_id = db.session.query(Song.phishin_id)\
+def get_random_phish_song(exclude=None):
+    print(exclude)
+    song_id = db.session.query(Song.phishin_id) \
                      .join(Band, Band.band_id == Song.band_id) \
-                     .filter(Band.name == 'Phish').order_by(func.rand()).first().phishin_id
+                     .filter(Band.name == 'Phish')
+
+    if exclude is not None:
+        song_id = song_id.filter(Song.phishin_id != exclude)
+
+    song_id = song_id.order_by(func.rand()).first().phishin_id
     return song_id
 
 @frontend.route('/vote/', methods=['GET', 'POST'])
@@ -53,6 +59,7 @@ def present_vote():
             if lhs == None or rhs == None:
                 song_id = None
         form.init_candidate(lhs, rhs)
+        print(lhs)
         return render_template('vote.html', form=form, lhs=lhs, rhs=rhs)
 
 @frontend.route('/bands/')
@@ -98,6 +105,15 @@ def single_song(song_id):
     versions = versions_with_comments.all()
 
     return render_template('single_song.html', song=song, versions=versions)
+
+
+@frontend.route('/vote')
+def random_song():
+    exclude = request.args.get('exclude')
+    new_id = get_random_phish_song(exclude=exclude)
+    if new_id is None:
+        return redirect('/')
+    return redirect('/vote/?song_id={}'.format(new_id))
 
 
 @frontend.route('/versions/<version_id>')

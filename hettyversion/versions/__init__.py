@@ -60,7 +60,7 @@ def get_candidate(song_id):
         user_id = current_user.id if current_user else 0
     except AttributeError:
         user_id = 0
-    versions = db.session.query(Version.version_id,Version.date,Version.url,Song.name,Venue.name.label('venue_name'),Venue.location) \
+    versions = db.session.query(Version.version_id,Version.song_id,Version.date,Version.url,Song.name,Venue.name.label('venue_name'),Venue.location) \
                          .join(Song, Song.phishin_id == Version.song_id) \
                          .join(Show, Show.phishin_id == Version.show_id) \
                          .join(Venue, Show.venue_id == Venue.phishin_id) \
