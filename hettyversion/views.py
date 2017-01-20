@@ -1,4 +1,4 @@
-from flask import redirect, Blueprint, render_template, session, request, flash, abort
+from flask import redirect, Blueprint, render_template, session, request, flash, abort, Markup
 from flask_user import login_required, current_user
 from hettyversion.models import Vote, Band, Song, Version, VersionComment, User, Venue, Show, ListenedTo
 from hettyversion.database import db
@@ -47,7 +47,7 @@ def present_vote():
         winner = get_version_by_id(winner_id)
         loser = get_version_by_id(loser_id)
         song = get_song_by_phishin_id(winner.song_id)
-        flash('You voted for {} over {}.'.format(winner.date, loser.date))
+        flash(Markup('You voted for <a href="/versions/{}">{}</a> over <a href="/versions/{}">{}</a>.  Leave your review on the individual version pages.'.format(winner_id, winner.date, loser_id, loser.date)))
         return redirect('/vote?song_id={}'.format(winner.song_id))
     else:
         song_id = request.args.get('song_id')
@@ -132,7 +132,7 @@ def random_vote():
 
 @frontend.route('/versions/<version_id>')
 def single_version(version_id):
-    version = db.session.query(Version.date,ListenedTo.lt_id.label('lt_id'),Version.mu,Version.version_id,Song.name.label('song_name'),Song.song_id,Show.show_id,Venue.name.label('venue_name'),Venue.location) \
+    version = db.session.query(Version.date,Version.url,ListenedTo.lt_id.label('lt_id'),Version.mu,Version.version_id,Song.name.label('song_name'),Song.song_id,Show.show_id,Venue.name.label('venue_name'),Venue.location) \
         .outerjoin(ListenedTo, and_(ListenedTo.user_id == current_user.get_id(), ListenedTo.version_id == version_id)) \
         .join(Song, Song.phishin_id == Version.song_id) \
         .join(Show, Show.phishin_id == Version.show_id) \
