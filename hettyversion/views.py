@@ -7,7 +7,7 @@ from hettyversion.versions import get_candidate, fight_versions
 from datetime import datetime
 from hettyversion.data import \
     get_version_by_id, get_song_by_id, get_song_by_phishin_id, get_band_id, mark_listenedto
-from sqlalchemy import func, or_
+from sqlalchemy import func, or_, and_
 
 frontend = Blueprint('frontend', __name__)
 
@@ -25,7 +25,6 @@ def update_rating(lhs_id, rhs_id, winner):
     add_vote(lhs_id, rhs_id, winner)
 
 def get_random_phish_song(exclude=None):
-    print(exclude)
     song_id = db.session.query(Song.phishin_id) \
                      .join(Band, Band.band_id == Song.band_id) \
                      .filter(Band.name == 'Phish')
@@ -107,7 +106,7 @@ def single_song(song_id):
 
     versions = db.session.query(Version.date,Version.version_id,Version.mu,func.count(Vote.vote_id).label('count'), \
         func.count(ListenedTo.lt_id).label('lt_id')) \
-        .outerjoin(ListenedTo, ListenedTo.version_id == Version.version_id) \
+        .outerjoin(ListenedTo, and_(ListenedTo.version_id == Version.version_id, ListenedTo.user_id == current_user.get_id())) \
         .outerjoin(Vote, or_(Vote.lhs == Version.version_id, Vote.rhs == Version.version_id)) \
         .filter(Version.song_id==song.phishin_id) \
         .group_by(Version.version_id).subquery('versions')
@@ -123,7 +122,7 @@ def single_song(song_id):
 
 
 @frontend.route('/vote')
-def random_song():
+def random_vote():
     exclude = request.args.get('exclude')
     new_id = get_random_phish_song(exclude=exclude)
     if new_id is None:
@@ -133,7 +132,8 @@ def random_song():
 
 @frontend.route('/versions/<version_id>')
 def single_version(version_id):
-    version = db.session.query(Version.date,Version.mu,Version.version_id,Song.name.label('song_name'),Song.song_id,Show.show_id,Venue.name.label('venue_name'),Venue.location) \
+    version = db.session.query(Version.date,ListenedTo.lt_id.label('lt_id'),Version.mu,Version.version_id,Song.name.label('song_name'),Song.song_id,Show.show_id,Venue.name.label('venue_name'),Venue.location) \
+        .join(ListenedTo, and_(ListenedTo.user_id == current_user.get_id(), ListenedTo.version_id == version_id)) \
         .join(Song, Song.phishin_id == Version.song_id) \
         .join(Show, Show.phishin_id == Version.show_id) \
         .join(Venue, Show.venue_id == Venue.phishin_id) \
