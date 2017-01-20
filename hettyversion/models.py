@@ -50,6 +50,12 @@ class Version(db.Model):
     show_id = db.Column(db.Integer)
 
 
+class ListenedTo(db.Model):
+    lt_id = db.Column(db.Integer, primary_key=True)
+    version_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer)
+
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
 
