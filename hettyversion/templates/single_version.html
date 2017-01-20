@@ -3,6 +3,12 @@
 {% block content %}
     <h1><a href="/listenedto" class="lt lt-{{ 'false' if version.lt_id == 0 else 'true' }}" data-listened_to="{{ 'false' if version.lt_id == 0 else 'true' }}" data-version_id="{{ version.version_id }}"><i class="fa fa-music" aria-hidden="true"></i></a>{{ version.song_name }} <small class="text-muted">{{ version.date }}</small> <a href="/songs/{{ version.song_id }}"><button type="button" class="btn btn-primary">All {{ version.song_name }} Versions</button></a></h1>
     <h2><small class="text-muted">{{version.venue_name }}, {{version.location}}</small></h2>
+    <div>
+      <audio controls>
+	<source{{ ' src=' + version.url if version.url else '' }} type="audio/mpeg">
+	  Your browser does not support the audio element.
+      </audio>
+    </div>
     <a href="/versions/{{ version.version_id }}/comment"><button type="button" class="btn btn-primary">Add a Comment</button></a>
     <h2>Rating: {{ version.mu|round(2) if version.mu is not none else 'UNRATED' }}</h2>
     {% if comments %}
