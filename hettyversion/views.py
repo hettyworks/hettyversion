@@ -14,13 +14,6 @@ frontend = Blueprint('frontend', __name__)
 def home_page():
     return render_template('home.html')
 
-@frontend.route('/versions/', methods=['GET', 'POST'])
-def create_version():
-    form = VersionForm()
-    if form.validate_on_submit():
-        return redirect('/success')
-    return render_template('new_version.html', form=form)
-
 def add_vote(lhs_id, rhs_id, winner):
     v = Vote(lhs=lhs_id, rhs=rhs_id, winner=winner, created_by=current_user.id, created=datetime.utcnow())
     db.session.add(v)
