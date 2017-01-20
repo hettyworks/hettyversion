@@ -1,4 +1,4 @@
-from flask import redirect, Blueprint, render_template, session, request, flash
+from flask import redirect, Blueprint, render_template, session, request, flash, jsonify
 from flask_user import login_required, current_user
 from hettyversion.models import Vote, Band, Song, Version, VersionComment, User, Venue, Show
 from hettyversion.database import db
@@ -61,6 +61,14 @@ def present_vote():
         form.init_candidate(lhs, rhs)
         print(lhs)
         return render_template('vote.html', form=form, lhs=lhs, rhs=rhs)
+
+
+# False is 0 true is 1
+@frontend.route('/listenedto', methods=['POST'])
+def record_listenedto():
+    print('listened to')
+    return jsonify(message='test')
+
 
 @frontend.route('/bands/')
 def bands_page():
