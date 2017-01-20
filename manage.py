@@ -64,10 +64,9 @@ def grant_role(user_id, role_id):
 def load_demo():
     clear_data()
     load_bands()
-    load_songdata(band_id=get_band_id(db, 'Phish'))
+    load_songdata(band_id=get_band_id('Phish'))
     load_hoodvers()
-    load_yemvers()    
-    #load_versiondata(band_id=get_band_id(db, 'Phish'))
+    load_yemvers()
 
 @manager.command
 def load_all():
@@ -115,7 +114,7 @@ def load_versiondata(band_id=1):
         s.band_id = band_id
         db.session.add(s)
         db.session.commit() 
-        song_id = get_song_id(db, s.name)
+        song_id = get_song_id(s.name)
         for version in get_song_versions(s.name):
             v = Version()
             v.title = version
@@ -139,7 +138,7 @@ def load_bands():
 
 def load_hoodvers():
     # Get Harry Hood song_id
-    song_id = get_song_id(db, 'Harry Hood')
+    song_id = get_song_id('Harry Hood')
     for version in get_song_versions('Harry Hood'):
         v = Version()
         v.title = version
@@ -149,7 +148,7 @@ def load_hoodvers():
 
 def load_yemvers():
     # test for get yem song_id
-    song_id = get_song_id(db, 'You Enjoy Myself')
+    song_id = get_song_id('You Enjoy Myself')
     for version in get_song_versions('You Enjoy Myself'):
         v = Version()
         v.title = version

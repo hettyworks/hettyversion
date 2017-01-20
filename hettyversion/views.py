@@ -5,7 +5,7 @@ from hettyversion.database import db
 from hettyversion.forms import VersionForm, VoteForm, VersionCommentForm
 from hettyversion.versions import get_candidate, fight_versions
 from datetime import datetime
-from hettyversion.data import get_version_by_id, get_song_by_id, get_song_by_phishin_id
+from hettyversion.data import get_version_by_id, get_song_by_id, get_song_by_phishin_id, get_band_id
 from sqlalchemy import func, or_
 
 frontend = Blueprint('frontend', __name__)
@@ -45,9 +45,9 @@ def present_vote():
         rhs_id = int(form.rhs_id.data)
         (winner_id, loser_id) = (lhs_id, rhs_id) if form.lhs.data else (rhs_id, lhs_id)
         update_rating(lhs_id, rhs_id, winner_id)
-        winner = get_version_by_id(db, winner_id)
-        loser = get_version_by_id(db, loser_id)
-        song = get_song_by_phishin_id(db, winner.song_id)
+        winner = get_version_by_id(winner_id)
+        loser = get_version_by_id(loser_id)
+        song = get_song_by_phishin_id(winner.song_id)
         return render_template('vote_result.html', winner=winner, loser=loser, song=song)
     else:
         song_id = request.args.get('song_id')
@@ -70,6 +70,16 @@ def bands_page():
 
 @frontend.route('/bands/<band_id>')
 def single_band(band_id):
+    band = db.session.query(Band).filter(Band.band_id==band_id).one()
+    songs = db.session.query(Song.song_id,Song.name,func.count(Version.song_id).label('count')) \
+        .outerjoin(Version, Song.phishin_id == Version.song_id) \
+        .group_by(Song.song_id).filter(Song.band_id==band_id).all()
+    return render_template('single_band.html', band=band, songs=songs)
+
+
+@frontend.route('/phish')
+def single_phish():
+    band_id = get_band_id('Phish')
     band = db.session.query(Band).filter(Band.band_id==band_id).one()
     songs = db.session.query(Song.song_id,Song.name,func.count(Version.song_id).label('count')) \
         .outerjoin(Version, Song.phishin_id == Version.song_id) \
@@ -117,11 +127,11 @@ def new_versioncomment(version_id):
         db.session.add(vc)
         db.session.commit()
         flash('You left a comment.')
-        version = get_version_by_id(db,version_id)
+        version = get_version_by_id(version_id)
         return redirect('/versions/' + version_id)
     else:
-        version = get_version_by_id(db,version_id)
-        song = get_song_by_id(db,version.song_id)
+        version = get_version_by_id(version_id)
+        song = get_song_by_id(version.song_id)
         return render_template('version_comment.html',form=form,version=version,song=song,user=current_user)
 
 

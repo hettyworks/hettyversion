@@ -2,8 +2,9 @@ from sqlalchemy.sql import select
 from bs4 import BeautifulSoup
 import urllib.request
 from hettyversion.models import Song
+from hettyversion.database import db
 
-def get_band_id(db, name):
+def get_band_id(name):
     meta = db.metadata
     for table in meta.sorted_tables:
         if table.name == 'band':
@@ -12,7 +13,7 @@ def get_band_id(db, name):
     return result.fetchone().band_id    
 
 
-def get_song_id(db, name):
+def get_song_id(name):
     meta = db.metadata
     for table in meta.sorted_tables:
         if table.name == 'song':
@@ -21,7 +22,7 @@ def get_song_id(db, name):
     return result.fetchone().song_id
 
 
-def get_version_by_id(db, id):
+def get_version_by_id(id):
     meta = db.metadata
     for table in meta.sorted_tables:
         if table.name == 'version':
@@ -29,7 +30,7 @@ def get_version_by_id(db, id):
             result = db.session.execute(s)
     return result.fetchone()
 
-def get_song_by_id(db, id):
+def get_song_by_id(id):
     meta = db.metadata
     for table in meta.sorted_tables:
         if table.name == 'song':
@@ -37,7 +38,7 @@ def get_song_by_id(db, id):
             result = db.session.execute(s)
     return result.fetchone()
 
-def get_song_by_phishin_id(db, id):
+def get_song_by_phishin_id(id):
     return db.session.query(Song).filter(Song.phishin_id == id).one()
 
 
