@@ -48,7 +48,8 @@ def present_vote():
         winner = get_version_by_id(winner_id)
         loser = get_version_by_id(loser_id)
         song = get_song_by_phishin_id(winner.song_id)
-        return render_template('vote_result.html', winner=winner, loser=loser, song=song)
+        flash('You voted for {} over {}.'.format(winner.date, loser.date))
+        return redirect('/vote?song_id={}'.format(winner.song_id))
     else:
         song_id = request.args.get('song_id')
         lhs, rhs = None, None
