@@ -36,5 +36,6 @@ def create_admin(app, db, name='microblog', template_mode='bootstrap3'):
     admin.add_view(SongView(hettyversion.models.Song, db.session))
     admin.add_view(AuthModelView(hettyversion.models.User, db.session))
     admin.add_view(AuthModelView(hettyversion.models.VersionComment, db.session))
+    admin.add_view(AuthModelView(hettyversion.models.ListenedTo, db.session))
 
     return admin

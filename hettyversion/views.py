@@ -1,11 +1,12 @@
-from flask import redirect, Blueprint, render_template, session, request, flash, jsonify
+from flask import redirect, Blueprint, render_template, session, request, flash, abort
 from flask_user import login_required, current_user
-from hettyversion.models import Vote, Band, Song, Version, VersionComment, User, Venue, Show
+from hettyversion.models import Vote, Band, Song, Version, VersionComment, User, Venue, Show, ListenedTo
 from hettyversion.database import db
 from hettyversion.forms import VersionForm, VoteForm, VersionCommentForm
 from hettyversion.versions import get_candidate, fight_versions
 from datetime import datetime
-from hettyversion.data import get_version_by_id, get_song_by_id, get_song_by_phishin_id, get_band_id
+from hettyversion.data import \
+    get_version_by_id, get_song_by_id, get_song_by_phishin_id, get_band_id, mark_listenedto
 from sqlalchemy import func, or_
 
 frontend = Blueprint('frontend', __name__)
@@ -65,9 +66,13 @@ def present_vote():
 
 # False is 0 true is 1
 @frontend.route('/listenedto', methods=['POST'])
-def record_listenedto():
-    print('listened to')
-    return jsonify(message='test')
+def listenedto():
+    version_id = request.json['version_id']
+    listened_to = request.json['listened_to']
+    if current_user.is_authenticated:
+        return mark_listenedto(current_user.get_id(),version_id,listened_to)
+    else:
+        abort(403)
 
 
 @frontend.route('/bands/')
@@ -100,7 +105,9 @@ def single_phish():
 def single_song(song_id):
     song = db.session.query(Song).filter(Song.song_id==song_id).one()
 
-    versions = db.session.query(Version.date,Version.version_id,Version.mu,func.count(Vote.vote_id).label('count')) \
+    versions = db.session.query(Version.date,Version.version_id,Version.mu,func.count(Vote.vote_id).label('count'), \
+        func.count(ListenedTo.lt_id).label('lt_id')) \
+        .outerjoin(ListenedTo, ListenedTo.version_id == Version.version_id) \
         .outerjoin(Vote, or_(Vote.lhs == Version.version_id, Vote.rhs == Version.version_id)) \
         .filter(Version.song_id==song.phishin_id) \
         .group_by(Version.version_id).subquery('versions')

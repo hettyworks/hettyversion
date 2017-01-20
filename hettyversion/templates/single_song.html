@@ -4,7 +4,7 @@
     <h1>{{ song.name }} - All Versions <a href="/vote?song_id={{ song.phishin_id }}"><button type="button" class="btn btn-primary">Vote</button></a></h1>
     <div class="list-group">
     {% for version in versions %}
-    	<a class="lt" href="/listenedto">lt</a><a class="list-group-item list-group-item-action" href="/versions/{{ version.version_id }}"><span class="badge badge-default">{{ version.count }} {{ 'Votes' if version.count != 1 else 'Vote' }}</span><span class="badge badge-default">{{ version.vc_count }} {{ 'Comments' if version.vc_count != 1 else 'Comment' }}</span><span class="badge badge-default">{{ version.mu|round(2) if version.mu is not none else 'Unrated' }}</span>{{ version.date }}</a>
+    	<a href="/listenedto" class="lt lt-{{ 'false' if version.lt_id == 0 else 'true' }}" data-listened_to="{{ 'false' if version.lt_id == 0 else 'true' }}" data-version_id="{{ version.version_id }}"><i class="fa fa-music" aria-hidden="true"></i></a><a class="list-group-item list-group-item-action" href="/versions/{{ version.version_id }}"><span class="badge badge-default">{{ version.count }} {{ 'Votes' if version.count != 1 else 'Vote' }}</span><span class="badge badge-default">{{ version.vc_count }} {{ 'Comments' if version.vc_count != 1 else 'Comment' }}</span><span class="badge badge-default">{{ version.mu|round(2) if version.mu is not none else 'Unrated' }}</span>{{ version.date }}</a>
     {% endfor %}
     </div>
 {% endblock %}

@@ -1,8 +1,23 @@
+from flask import jsonify
 from sqlalchemy.sql import select
 from bs4 import BeautifulSoup
 import urllib.request
-from hettyversion.models import Song
+from hettyversion.models import Song, ListenedTo
 from hettyversion.database import db
+
+
+def mark_listenedto(user_id, version_id, listened_to):
+    if listened_to:  # we want to make it not-listened-to
+        db.session.query(ListenedTo).filter_by(version_id=version_id,user_id=user_id) \
+            .delete()
+        db.session.commit()
+        return jsonify(listened_to=False)
+    else:  # we want to make it listened-to
+        newLT = ListenedTo(version_id=version_id,user_id=user_id)
+        db.session.add(newLT)
+        db.session.commit()
+        return jsonify(listened_to=True)
+
 
 def get_band_id(name):
     meta = db.metadata
