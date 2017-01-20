@@ -133,7 +133,7 @@ def random_vote():
 @frontend.route('/versions/<version_id>')
 def single_version(version_id):
     version = db.session.query(Version.date,ListenedTo.lt_id.label('lt_id'),Version.mu,Version.version_id,Song.name.label('song_name'),Song.song_id,Show.show_id,Venue.name.label('venue_name'),Venue.location) \
-        .join(ListenedTo, and_(ListenedTo.user_id == current_user.get_id(), ListenedTo.version_id == version_id)) \
+        .outerjoin(ListenedTo, and_(ListenedTo.user_id == current_user.get_id(), ListenedTo.version_id == version_id)) \
         .join(Song, Song.phishin_id == Version.song_id) \
         .join(Show, Show.phishin_id == Version.show_id) \
         .join(Venue, Show.venue_id == Venue.phishin_id) \
