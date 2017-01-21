@@ -22,4 +22,4 @@ class VoteForm(Form):
 
 
 class VersionCommentForm(FlaskForm):
-    body = TextAreaField(u'Comment Text', [validators.required(), validators.length(max=140)])
+    body = TextAreaField(u'Comment Text', [validators.required(), validators.length(max=4096)])
