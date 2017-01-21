@@ -4,11 +4,9 @@ services:
     build: .
     environment:
       BAK_BUCKET: gs://hettyversion-bak2gs
-      GOOGLE_APPLICATION_CREDENTIALS: /opt/hettyversion/creds.json
       MYSQL_HOST: 192.168.1.2
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       DUMP_DB: hettyversion
-
     volumes:
       - ./creds.json:/opt/hettyversion/creds.json
