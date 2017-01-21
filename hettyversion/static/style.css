@@ -115,6 +115,10 @@ a.lt:hover:after {
     box-shadow: 2px 2px 2px rgba(0,0,0,0.5)
 }
 
+.comment-body {
+    white-space: pre;
+}
+
 a.lt-false:hover:after {
     content: 'Mark this version listened.';
 }
