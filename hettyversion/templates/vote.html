@@ -18,6 +18,7 @@
   </audio></div>
   {{ form.lhs_id }}
   {{ form.lhs(class="vote-button") }}
+  {{ form.lhs_comment(class="vote-comment") }}
   </div>
   <div class="col-sm-6">
     <h2><small class="text-muted">{{ rhs.venue_name }}, {{ rhs.location }}</small></h2>
@@ -28,6 +29,8 @@
   </audio></div>
   {{ form.rhs_id }}
   {{ form.rhs(class="vote-button") }}
+  {{ form.rhs_comment(class="vote-comment") }}
   </div>
+  <div>Any comments you leave will be saved when you vote for either version.</div>
 </form>
 {% endblock %}

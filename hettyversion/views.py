@@ -44,6 +44,20 @@ def present_vote():
         rhs_id = int(form.rhs_id.data)
         (winner_id, loser_id) = (lhs_id, rhs_id) if form.lhs.data else (rhs_id, lhs_id)
         update_rating(lhs_id, rhs_id, winner_id)
+        if form.lhs_comment.data:
+            vc = VersionComment(version_id=lhs_id,
+                                author_id=current_user.id,
+                                body=form.lhs_comment.data,
+                                comment_date=datetime.utcnow())
+            db.session.add(vc)
+            db.session.commit()
+        if form.rhs_comment.data:
+            vc = VersionComment(version_id=rhs_id,
+                                author_id=current_user.id,
+                                body=form.rhs_comment.data,
+                                comment_date=datetime.utcnow())
+            db.session.add(vc)
+            db.session.commit()
         winner = get_version_by_id(winner_id)
         loser = get_version_by_id(loser_id)
         song = get_song_by_phishin_id(winner.song_id)
