@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bak2gs
+  labels:
+    name: bak2gs
+spec:
+  containers:
+    - env:
+      - name: MYSQL_HOST
+        value: mysql
+      - name: BAK_BUCKET
+        value: gs://hettyversion-bak2gs
+      - name: MYSQL_USER
+        value: root
+      - name: DUMP_DB
+        value: hettyversion
+      - name: MYSQL_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: mysql-user
+            key: password
+      image: gcr.io/316443988803/bak2gs:%version%
+      name: bak2gs
+      volumeMounts:
+        - mountPath: /opt/gs/
+          name: creds
+  volumes:
+    - name: creds
+      secret:
+        secretName: bak2gs-creds
