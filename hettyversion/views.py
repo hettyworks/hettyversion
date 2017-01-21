@@ -61,7 +61,7 @@ def present_vote():
         winner = get_version_by_id(winner_id)
         loser = get_version_by_id(loser_id)
         song = get_song_by_phishin_id(winner.song_id)
-        flash(Markup('You voted for <a href="/versions/{}">{}</a> over <a href="/versions/{}">{}</a>.  Leave your review on the individual version pages.'.format(winner_id, winner.date, loser_id, loser.date)))
+        flash(Markup('You voted for <a href="/versions/{}">{}</a> over <a href="/versions/{}">{}</a>.  Check out all the reviews on the individual version pages.'.format(winner_id, winner.date, loser_id, loser.date)))
         return redirect('/vote?song_id={}'.format(winner.song_id))
     else:
         song_id = request.args.get('song_id')
