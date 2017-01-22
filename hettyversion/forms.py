@@ -13,8 +13,9 @@ class VoteForm(Form):
     rhs = SubmitField()
     lhs_id = HiddenField()
     rhs_id = HiddenField()
-    lhs_comment = TextAreaField(u'Comment Text', [validators.required(), validators.length(max=4096)])
-    rhs_comment = TextAreaField(u'Comment Text', [validators.required(), validators.length(max=4096)])
+    lhs_comment = TextAreaField(u'Comment Text', [validators.length(max=4096)])
+    rhs_comment = TextAreaField(u'Comment Text', [validators.length(max=4096)])
+
     def init_candidate(self, lhs, rhs):
         self.lhs.label = Label(None, lhs.date)
         self.rhs.label  = Label(None, rhs.date)
